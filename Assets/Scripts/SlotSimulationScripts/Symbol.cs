@@ -5,9 +5,9 @@ public enum Symbol
     Queen,
     King,
     Ace,
-    Mihu,
     Pafka,
     Seire,
+    Mihu,
     Rolts,
     Book
 }

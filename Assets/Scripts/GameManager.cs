@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject[] gameSymbols;
     public int nOfFreespins = 10;
     public int freespinsLeft = 0;
-    public int nOfLines = 3;
+    public int nOfLines = 10;
     public decimal betPerLine = 1.0M;
     public decimal bankRoll = 1000.0M;
     public bool freespinsActivated = false;
