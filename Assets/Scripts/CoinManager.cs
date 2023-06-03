@@ -1,6 +1,6 @@
 public class CoinManager
 {
-    public decimal Bankroll { get; set; } = 1000.0M;
+    public decimal Bankroll { get; private set; }
 
     private decimal betPerLine;
     private decimal totalBet;
@@ -21,6 +21,11 @@ public class CoinManager
             totalBet = 0;
             return false;
         }
+    }
+
+    public void SetBankRoll(decimal bankRoll)
+    {
+        Bankroll = bankRoll;
     }
 
     public decimal GetLineWin(int multiplier)

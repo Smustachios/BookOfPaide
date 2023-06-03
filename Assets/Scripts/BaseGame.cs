@@ -16,6 +16,7 @@ public class BaseGame
         lines = new Lines(nOfLines);
 
         spinData.LineHits = CheckLines(board);
+        spinData.boardStrings = PrintBoard(board);
         spinData.RandomReelSpots = RandomReelsSpots;
         spinData.BonusGameWon = BonusGameWon(board);
 
@@ -92,5 +93,24 @@ public class BaseGame
         }
 
         return wonLines;
+    }
+
+    protected string[] PrintBoard(Board board)
+    {
+        string[] boardLines = new string[3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            string debug = "";
+
+            foreach (Symbol[] line in board.GameBoard)
+            {
+                debug += line[i];
+            }
+
+            boardLines[i] = debug;
+        }
+
+        return boardLines;
     }
 }

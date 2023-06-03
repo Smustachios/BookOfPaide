@@ -1,91 +1,123 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public int nOfLines = 3;
     public int nOfFreespins = 10;
+    public int freespinsLeft = 0;
+    public int nOfLines = 3;
     public decimal betPerLine = 1.0M;
+    public decimal bankRoll = 1000.0M;
+    public bool freespinsActivated = false;
+    public bool betCompleted = false;
 
-    private BaseGame baseGame;
+    private BOPGamePlay gamePlay;
     private CoinManager coinManager;
+    private SpinData spinData;
+    private Symbol expandingSymbol;
 
-    private bool bonusGame = false;
-    private decimal spinWin = 0.0M;
-    private decimal totalWin = 0.0M;
-    private int freespinsLeft = 0;
+    private decimal spinWin = 0;
+    private decimal totalWin = 0;
 
-
-    private void Start()
+    private void Awake()
     {
-        StartGame();    
+        gamePlay = new();
+        coinManager = new();
+
+        coinManager.SetBankRoll(bankRoll);
     }
 
-    public void StartGame()
+    public void SpinButton()
     {
-        coinManager = new();
-        baseGame = new();
-        
+        betCompleted = Spin();
+        PrintDebug(spinData);
+        spinWin = 0;
 
-        while (!bonusGame)
+        if (betCompleted)
         {
-            SpinData spinData = CompleteSpin();
-            PrintBoard(baseGame);
+            coinManager.GetTotalWin(totalWin);
+            PrintCoinDebug(totalWin);
+            totalWin = 0;
+        }
+    }
 
-            Debug.Log($"Spin win {spinWin}, bonus win: {spinData.BonusGameWon}");
+    public bool Spin()
+    {
+        if (!freespinsActivated)
+        {
+            coinManager.MakeBet(nOfLines, betPerLine);
 
-            bonusGame = spinData.BonusGameWon;
+            spinData = gamePlay.Spin(freespinsActivated, betPerLine, nOfLines);
 
-            if (bonusGame)
+            GetLineWins();
+
+            if (spinData.BonusGameWon)
             {
+                freespinsActivated = true;
                 freespinsLeft = nOfFreespins;
+                expandingSymbol = spinData.ExpandingSymbol;
+                Debug.Log($"Freespins won. Expanding symbol: {spinData.ExpandingSymbol}.");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            freespinsLeft--;
+            Debug.Log($"{freespinsLeft} freespins left.");
+
+            spinData = gamePlay.Spin(freespinsActivated, betPerLine, nOfLines, expandingSymbol);
+
+            GetLineWins();
+
+            if (spinData.BonusGameWon)
+            {
+                freespinsLeft += nOfFreespins;
+                return false;
             }
 
-            totalWin += spinWin;
-            spinWin = 0;
-        }
-        while (bonusGame)
-        {
+            if (freespinsLeft <= 0)
+            {
+                freespinsActivated = false;
+                return true;
+            }
 
+            return false;
         }
-
-        Debug.Log($"Total win: {totalWin}, bankroll left: {coinManager.Bankroll}");
     }
 
-    private SpinData CompleteSpin()
+    private void GetLineWins()
     {
-        coinManager.MakeBet(nOfLines, betPerLine);
-
-        SpinData spinData = baseGame.Spin(nOfLines);
-
         foreach (LineHit hit in spinData.LineHits)
         {
             spinWin += coinManager.GetLineWin(hit.WinMultiplier);
         }
 
-        coinManager.GetTotalWin(spinWin);
-
-        return spinData;
-    }
-
-    private SpinData CompleteFreeSpin()
-    {
-        SpinData spinData = baseGame.Spin(nOfLines);
-
-        return spinData;
-    }
-
-    private void PrintBoard(BaseGame game)
-    {
-        for (int i = 0; i < 3; i++)
+        if (spinData.ExpandingSymbolHit)
         {
-            string debug = "";
-
-            foreach (Symbol[] line in game.Board.GameBoard)
-            {
-                debug += line[i];
-            }
-
-            Debug.Log(debug);
+            spinWin += coinManager.GetLineWin(spinData.ExpandingSymbolMultiplier) * nOfLines;
+            Debug.Log($"Expanding symbol hit for {spinData.ExpandingSymbolWinID} symbols");
         }
+
+        totalWin += spinWin;
+    }
+
+    private void PrintDebug(SpinData spinData)
+    {
+        Debug.Log(spinData.ToString());
+
+        foreach (string boardLine in spinData.boardStrings)
+        {
+            Debug.Log(boardLine + "\n");
+        }
+    }
+
+    private void PrintCoinDebug(decimal totalWin)
+    {
+        Debug.Log($"totalWin: {totalWin}, bankroll: {coinManager.Bankroll}");
     }
 }

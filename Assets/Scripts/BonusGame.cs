@@ -7,9 +7,16 @@ public class BonusGame : BaseGame
         lines = new Lines(nOfLines);
 
         spinData.LineHits = CheckLines(board);
+        spinData.boardStrings = PrintBoard(board);
         spinData.RandomReelSpots = RandomReelsSpots;
         spinData.BonusGameWon = BonusGameWon(board);
-        spinData.expandingSymbolWinID = CheckExpandingWin(expandingSymbol, board);
+        spinData.ExpandingSymbolWinID = CheckExpandingWin(expandingSymbol, board);
+        spinData.ExpandingSymbolHit = spinData.ExpandingSymbolWinID >= 2;
+
+        if (spinData.ExpandingSymbolHit)
+        {
+            spinData.ExpandingSymbolMultiplier = Paytable.GetWinMultiplier(spinData.ExpandingSymbolWinID, expandingSymbol);
+        }
 
         return spinData;
     }
