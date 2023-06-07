@@ -8,7 +8,7 @@ public class BonusGame : BaseGame
 
         spinData.LineHits = CheckLines(board);
         spinData.boardStrings = PrintBoard(board);
-        spinData.RandomReelSpots = RandomReelsSpots;
+        spinData.RandomReelSpots = board.RandomReelSpots;
         spinData.BonusGameWon = BonusGameWon(board);
         spinData.ExpandingSymbolWinID = CheckExpandingWin(expandingSymbol, board);
         spinData.ExpandingSymbolHit = spinData.ExpandingSymbolWinID >= 2;

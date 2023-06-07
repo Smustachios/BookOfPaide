@@ -4,35 +4,61 @@ using UnityEngine;
 
 public class ReelConstructor : MonoBehaviour
 {
+    public GameManager gameManager;
     public int reelId = -1;
     public float placementOffset = 3.0f;
 
-    private GameManager gameManager;
-    private Reel gameReel;
+    private Reel baseReel;
+    private Reel bonusReel;
     private float positionTracker = -3f;
 
 
     private void Awake()
     {
-        gameManager = FindAnyObjectByType<GameManager>();
         Reels allReels = new();
-        gameReel = allReels.GameReels[reelId];
+        baseReel = allReels.GameReels[reelId];
+        bonusReel = allReels.BonusReels[reelId];
 
-        for (int c = -gameReel.ReelSymbols.Length * 3; c < gameReel.ReelSymbols.Length * 3; c += gameReel.ReelSymbols.Length * 3)
+        MakeBaseReel();
+    }
+
+    public void MakeBaseReel()
+    {
+        for (int i = 0; i < 3; i ++)
         {
-            InitalizeReel(c);
+            if (i == 2)
+            {
+                positionTracker = (-baseReel.ReelSymbols.Length * 3) - 3;
+            }
+            foreach (Symbol symbol in baseReel.ReelSymbols)
+            {
+                GameObject gameSymbol = Instantiate(gameManager.gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+                positionTracker += placementOffset;
+            }
         }
     }
 
-    private void InitalizeReel(float startPos)
+    public void MakeBonusReel()
     {
-        foreach (Symbol symbol in gameReel.ReelSymbols)
+        for (int i = 0; i < 3; i++)
         {
-            GameObject gameSymbol = Instantiate(gameManager.gameSymbols[(int)symbol],
-                transform.position + new Vector3(0, positionTracker + startPos), transform.rotation, transform);
-            positionTracker += placementOffset;
+            if (i == 2)
+            {
+                positionTracker = (-bonusReel.ReelSymbols.Length * 3) - 3;
+            }
+            foreach (Symbol symbol in bonusReel.ReelSymbols)
+            {
+                GameObject gameSymbol = Instantiate(gameManager.gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+                positionTracker += placementOffset;
+            }
         }
+    }
 
-        positionTracker = -3;
+    public void DestroyReel()
+    {
+        foreach (var symbol in GetComponentsInChildren<SpriteRenderer>())
+        {
+            Destroy(symbol.gameObject);
+        }
     }
 }

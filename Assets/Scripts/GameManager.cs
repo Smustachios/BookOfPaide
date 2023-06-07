@@ -1,22 +1,43 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject[] gameSymbols;
+    public GameObject[] reels;
+    public Action<int[]> StartSpin;
+    public Action<List<LineHit>> ShowLines;
+    public Symbol expandingSymbol;
+
     public int nOfFreespins = 10;
     public int freespinsLeft = 0;
+
     public int nOfLines = 10;
     public decimal betPerLine = 1.0M;
     public decimal bankRoll = 1000.0M;
-    public bool freespinsActivated = false;
+
+    private bool _freespinsActivated = false;
+    public bool FreespinsActivated 
+    {
+        get
+        {
+            return _freespinsActivated;
+        }
+        set
+        {
+            _freespinsActivated = value;
+            freespinsLeft = nOfFreespins;
+        }
+    }
+
     public bool betCompleted = false;
+    public bool spinAnimCompleted = false;
 
     private BOPGamePlay gamePlay;
     private CoinManager coinManager;
     private SpinData spinData;
-    private Symbol expandingSymbol;
+    
 
     private decimal spinWin = 0;
     private decimal totalWin = 0;
@@ -31,8 +52,9 @@ public class GameManager : MonoBehaviour
 
     public void SpinButton()
     {
-        betCompleted = Spin();
+        betCompleted = GetSpinData();
         PrintDebug(spinData);
+        StartSpin.Invoke(spinData.RandomReelSpots);
         spinWin = 0;
 
         if (betCompleted)
@@ -43,19 +65,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool Spin()
+    public bool GetSpinData()
     {
-        if (!freespinsActivated)
+        if (!FreespinsActivated)
         {
             coinManager.MakeBet(nOfLines, betPerLine);
 
-            spinData = gamePlay.Spin(freespinsActivated, betPerLine, nOfLines);
+            spinData = gamePlay.Spin(FreespinsActivated, betPerLine, nOfLines);
 
             GetLineWins();
 
             if (spinData.BonusGameWon)
             {
-                freespinsActivated = true;
+                FreespinsActivated = true;
                 freespinsLeft = nOfFreespins;
                 expandingSymbol = spinData.ExpandingSymbol;
                 Debug.Log($"Freespins won. Expanding symbol: {spinData.ExpandingSymbol}.");
@@ -71,7 +93,7 @@ public class GameManager : MonoBehaviour
             freespinsLeft--;
             Debug.Log($"{freespinsLeft} freespins left.");
 
-            spinData = gamePlay.Spin(freespinsActivated, betPerLine, nOfLines, expandingSymbol);
+            spinData = gamePlay.Spin(FreespinsActivated, betPerLine, nOfLines, expandingSymbol);
 
             GetLineWins();
 
@@ -83,7 +105,7 @@ public class GameManager : MonoBehaviour
 
             if (freespinsLeft <= 0)
             {
-                freespinsActivated = false;
+                FreespinsActivated = false;
                 return true;
             }
 
@@ -105,6 +127,24 @@ public class GameManager : MonoBehaviour
         }
 
         totalWin += spinWin;
+    }
+
+    private void ClearReels()
+    {
+        foreach (GameObject reel in reels)
+        {
+            ReelConstructor constructor = reel.GetComponent<ReelConstructor>();
+            constructor.DestroyReel();
+        }
+    }
+
+    private void MakeBonusReels()
+    {
+        foreach (GameObject reel in reels)
+        {
+            ReelConstructor constructor = reel.GetComponent<ReelConstructor>();
+            constructor.MakeBonusReel();
+        }
     }
 
     private void PrintDebug(SpinData spinData)

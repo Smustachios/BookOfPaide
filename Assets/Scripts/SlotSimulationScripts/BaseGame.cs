@@ -3,7 +3,6 @@ using System.Collections.Generic;
 public class BaseGame
 {
     public Board Board { get; set; }
-    public int[] RandomReelsSpots { get; private set; } = new int[5];
 
     protected Reels reels = new();
     protected Lines lines;
@@ -17,7 +16,7 @@ public class BaseGame
 
         spinData.LineHits = CheckLines(board);
         spinData.boardStrings = PrintBoard(board);
-        spinData.RandomReelSpots = RandomReelsSpots;
+        spinData.RandomReelSpots = board.RandomReelSpots;
         spinData.BonusGameWon = BonusGameWon(board);
 
         return spinData;

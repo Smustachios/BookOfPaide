@@ -1,4 +1,6 @@
-public class CoinManager
+using UnityEngine;
+
+public class CoinManager : MonoBehaviour
 {
     public decimal Bankroll { get; private set; }
 
