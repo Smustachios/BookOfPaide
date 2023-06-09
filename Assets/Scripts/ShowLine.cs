@@ -5,14 +5,13 @@ using UnityEngine;
 public class ShowLine : MonoBehaviour
 {
     public GameManager gameManager;
-    public int LineId;
 
-    private SpriteRenderer spriteRenderer;
+    private GameLine[] lines;
 
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        lines = GetComponentsInChildren<GameLine>();
     }
 
     private void OnEnable()
@@ -27,19 +26,16 @@ public class ShowLine : MonoBehaviour
 
     private void ActivateLineAfterWin(List<LineHit> lines)
     {
-        foreach (LineHit line in lines)
-        {
-            if (line.LineId == LineId)
-            {
-                StartCoroutine(ActivateLine());
-            }
-        }
+        StartCoroutine(ActivateLine(lines));
     }
 
-    private IEnumerator ActivateLine()
+    private IEnumerator ActivateLine(List<LineHit> winLines)
     {
-        spriteRenderer.enabled = true;
-        yield return new WaitForSeconds(1f);
-        spriteRenderer.enabled = false;
+        foreach (LineHit lineHit in winLines)
+        {
+            lines[lineHit.LineId - 1].spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(0.5f);
+            lines[lineHit.LineId - 1].spriteRenderer.enabled = false;
+        }
     }
 }

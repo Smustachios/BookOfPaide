@@ -1,54 +1,47 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ReelSpinner : MonoBehaviour
 {
-    public float animationOffset;
+    public ReelManager reelManager;
+    public Action reelsStopped;
 
     private int preSpinLenght = 45;
-    private int reelId;
-    private ReelConstructor reelConstructor;
 
 
-    private void Awake()
+    public void SpinReels(int[] randomReelPos)
     {
-        reelConstructor = GetComponent<ReelConstructor>();
-        reelId = reelConstructor.reelId;
+        foreach (GameObject reel in reelManager.reels)
+        {
+            StartCoroutine(MoveReel(randomReelPos, reel.transform));
+        }
     }
 
-    public void SpinReel(int[] randomReelPos)
+    private IEnumerator MoveReel(int[] randomReelPos, Transform reelTransform)
     {
-        StartCoroutine(MoveReel(randomReelPos));
-    }
+        ReelConstructor reelData = reelTransform.GetComponent<ReelConstructor>();
 
-    private IEnumerator MoveReel(int[] randomReelPos)
-    {
         for (int i = 0; i < preSpinLenght * 4; i++)
         {
-            transform.position -= new Vector3(0, 0.25f);
+            reelTransform.position -= new Vector3(0, 0.25f);
             yield return new WaitForSeconds(0.002f);
         }
 
-        Vector3 finalPos = new Vector3(transform.position.x, -(randomReelPos[reelId] * 3) + 3);
-        Vector3 startPos = finalPos - new Vector3(0, -animationOffset);
+        Vector3 finalPos = new (reelTransform.position.x, -(randomReelPos[reelData.reelId] * 3) + 3);
+        Vector3 startPos = finalPos - new Vector3(0, -reelData.animationOffset);
 
-        transform.position = startPos;
+        reelTransform.position = startPos;
 
-        for (int i = 0; i < animationOffset * 4; i++)
+        for (int i = 0; i < reelData.animationOffset * 4; i++)
         {
-            transform.position -= new Vector3(0, 0.25f);
+            reelTransform.position -= new Vector3(0, 0.25f);
             yield return new WaitForSeconds(0.005f);
         }
-    }
 
-    private void OnEnable()
-    {
-        reelConstructor.gameManager.StartSpin += SpinReel;
-    }
-
-    private void OnDisable()
-    {
-        reelConstructor.gameManager.StartSpin -= SpinReel;
+        if (reelData.reelId == 4)
+        {
+            reelsStopped.Invoke();
+        }
     }
 }

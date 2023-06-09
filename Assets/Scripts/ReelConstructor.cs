@@ -1,29 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ReelConstructor : MonoBehaviour
 {
-    public GameManager gameManager;
     public int reelId = -1;
     public float placementOffset = 3.0f;
+    public float animationOffset;
 
-    private Reel baseReel;
-    private Reel bonusReel;
     private float positionTracker = -3f;
 
 
-    private void Awake()
+    public void MakeBaseReel(GameObject[] gameSymbols)
     {
-        Reels allReels = new();
-        baseReel = allReels.GameReels[reelId];
-        bonusReel = allReels.BonusReels[reelId];
+        Reel baseReel = new Reels().GameReels[reelId];
 
-        MakeBaseReel();
-    }
-
-    public void MakeBaseReel()
-    {
         for (int i = 0; i < 3; i ++)
         {
             if (i == 2)
@@ -32,14 +21,16 @@ public class ReelConstructor : MonoBehaviour
             }
             foreach (Symbol symbol in baseReel.ReelSymbols)
             {
-                GameObject gameSymbol = Instantiate(gameManager.gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+                GameObject gameSymbol = Instantiate(gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
                 positionTracker += placementOffset;
             }
         }
     }
 
-    public void MakeBonusReel()
+    public void MakeBonusReel(GameObject[] gameSymbols)
     {
+        Reel bonusReel = new Reels().BonusReels[reelId];
+
         for (int i = 0; i < 3; i++)
         {
             if (i == 2)
@@ -48,7 +39,7 @@ public class ReelConstructor : MonoBehaviour
             }
             foreach (Symbol symbol in bonusReel.ReelSymbols)
             {
-                GameObject gameSymbol = Instantiate(gameManager.gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+                GameObject gameSymbol = Instantiate(gameSymbols[(int)symbol], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
                 positionTracker += placementOffset;
             }
         }

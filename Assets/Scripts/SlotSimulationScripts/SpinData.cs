@@ -12,7 +12,6 @@ public class SpinData
     public int ExpandingSymbolMultiplier { get; set; }
     public Symbol ExpandingSymbol { get; set; }
     public int RandomExpaningReelSpot { get; set; }
-
     public decimal SpinWin { get; set; }
 
 

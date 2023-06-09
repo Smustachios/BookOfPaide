@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
-    public decimal Bankroll { get; private set; }
+    public decimal Bankroll = 1000.0M;
+    public decimal BetPerLine { get; set; } = 1.0M;
+    public decimal TotalWin { get; set; }
+    public decimal SpinWin { get; set; }
 
-    private decimal betPerLine;
     private decimal totalBet;
 
 
-    public bool MakeBet(int nOfLines, decimal betPerLine)
+    public bool MakeBet(int nOfLines)
     {
-        this.betPerLine = betPerLine;
-        totalBet = nOfLines * betPerLine;
+        totalBet = nOfLines * BetPerLine;
 
         if (Bankroll - totalBet >= 0)
         {
             Bankroll -= totalBet;
+            Debug.Log(Bankroll);
             return true;
         }
         else
@@ -32,11 +34,33 @@ public class CoinManager : MonoBehaviour
 
     public decimal GetLineWin(int multiplier)
     {
-        return multiplier * betPerLine;
+        return multiplier * BetPerLine;
     }
 
-    public void GetTotalWin(decimal totalWin)
+    public void GetTotalWin()
     {
-        Bankroll += totalWin;
+        Bankroll += TotalWin;
+    }
+
+    public void ClearWins()
+    {
+        SpinWin = 0;
+        TotalWin = 0;
+    }
+
+    public void GetLineWins(SpinData spinData, int nOfLines)
+    {
+        foreach (LineHit hit in spinData.LineHits)
+        {
+            SpinWin += GetLineWin(hit.WinMultiplier);
+        }
+
+        if (spinData.ExpandingSymbolHit)
+        {
+            SpinWin += GetLineWin(spinData.ExpandingSymbolMultiplier) * nOfLines;
+        }
+
+        TotalWin += SpinWin;
+        SpinWin = 0;
     }
 }
