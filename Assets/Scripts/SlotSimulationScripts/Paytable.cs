@@ -43,6 +43,12 @@ public class Paytable
                 else if (winId == 5) { multiplier = 5000; }
 
                 return multiplier;
+            case Symbol.Book:
+                if (winId == 3) { multiplier = 2; }
+                else if (winId == 4) { multiplier = 20; }
+                else if (winId == 5) { multiplier = 200; }
+
+                return multiplier;
             default: return 0;
         }
     }

@@ -6,6 +6,7 @@ public class ReelSpinner : MonoBehaviour
 {
     public ReelManager reelManager;
     public Action reelsStopped;
+    public Action expandingReelStopped;
 
     private int preSpinLenght = 45;
 
@@ -16,6 +17,11 @@ public class ReelSpinner : MonoBehaviour
         {
             StartCoroutine(MoveReel(randomReelPos, reel.transform));
         }
+    }
+
+    public void SpinExpandingReel(int randomPos)
+    {
+        StartCoroutine(MoveExpandingReel(randomPos, reelManager.expandingReel.transform));
     }
 
     private IEnumerator MoveReel(int[] randomReelPos, Transform reelTransform)
@@ -43,5 +49,23 @@ public class ReelSpinner : MonoBehaviour
         {
             reelsStopped.Invoke();
         }
+    }
+
+    private IEnumerator MoveExpandingReel(int randomPosition, Transform reelTransform)
+    {
+        Vector3 finalPos = new Vector3(reelTransform.position.x, -(randomPosition * 5) + 5);
+        Vector3 startPos = finalPos - new Vector3(0, -(12 * 5));
+
+        reelTransform.position = startPos;
+
+        for (int i = 0; i <= 12;  i++)
+        {
+            reelTransform.position += new Vector3(0, -5);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        yield return new WaitForSeconds(2.0f);
+
+        expandingReelStopped.Invoke();
     }
 }

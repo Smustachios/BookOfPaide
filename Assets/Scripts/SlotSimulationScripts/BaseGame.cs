@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class BaseGame
 {
@@ -15,14 +17,28 @@ public class BaseGame
         lines = new Lines(nOfLines);
 
         spinData.LineHits = CheckLines(board);
-        spinData.boardStrings = PrintBoard(board);
         spinData.RandomReelSpots = board.RandomReelSpots;
-        spinData.BonusGameWon = BonusGameWon(board);
+        spinData.BonusGameWon = BonusGameWon(board, out int bookWin);
+        spinData.BookWinMultiplier = bookWin;
 
         return spinData;
     }
 
-    protected bool BonusGameWon(Board board)
+    protected bool BonusGameWon(Board board, out int bookMultiplier)
+    {
+        int bookCounter = GetBookCount(board);
+
+        if (bookCounter >= 3)
+        {
+            bookMultiplier = GetBookMultiplier(bookCounter);
+            return true;
+        }
+
+        bookMultiplier = 0;
+        return false;
+    }
+
+    private int GetBookCount(Board board)
     {
         int bookCounter = 0;
 
@@ -37,12 +53,14 @@ public class BaseGame
             }
         }
 
-        if (bookCounter >= 3)
-        {
-            return true;
-        }
+        return bookCounter;
+    }
 
-        return false;
+    private int GetBookMultiplier(int bookCount)
+    {
+        if (bookCount == 3) return 2;
+        else if (bookCount == 4) return 20;
+        else { return 200; }
     }
 
     protected Board SetRandomBoard(Reel[] gameReels)
@@ -92,24 +110,5 @@ public class BaseGame
         }
 
         return wonLines;
-    }
-
-    protected string[] PrintBoard(Board board)
-    {
-        string[] boardLines = new string[3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            string debug = "";
-
-            foreach (Symbol[] line in board.GameBoard)
-            {
-                debug += line[i];
-            }
-
-            boardLines[i] = debug;
-        }
-
-        return boardLines;
     }
 }

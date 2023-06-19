@@ -50,21 +50,18 @@ public class Line
 
     private void ConvertBooks(Symbol winSymbol)
     {
-        if (winSymbol != Symbol.Book)
+        for (int c = 0; c < LineSymbols.Length; c++)
         {
-            for (int c = 0; c < LineSymbols.Length; c++)
+            if (LineSymbols[c] == Symbol.Book)
             {
-                if (LineSymbols[c] == Symbol.Book)
-                {
-                    LineSymbols[c] = winSymbol;
-                }
+                LineSymbols[c] = winSymbol;
             }
         }
     }
 
-    public static bool IsPremiumSymbol(Symbol symbol) 
+    public static bool IsPremiumSymbol(Symbol symbol)
     {
-        if (symbol == Symbol.Mihu || 
+        if (symbol == Symbol.Mihu ||
             symbol == Symbol.Pafka ||
             symbol == Symbol.Seire ||
             symbol == Symbol.Rolts
@@ -88,7 +85,7 @@ public class Line
             }
         }
 
-        return Symbol.Book;
+        return Symbol.Rolts;
     }
 
     private bool IsSymbolsSame(params Symbol[] symbols)

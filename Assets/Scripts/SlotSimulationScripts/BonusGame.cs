@@ -7,9 +7,9 @@ public class BonusGame : BaseGame
         lines = new Lines(nOfLines);
 
         spinData.LineHits = CheckLines(board);
-        spinData.boardStrings = PrintBoard(board);
         spinData.RandomReelSpots = board.RandomReelSpots;
-        spinData.BonusGameWon = BonusGameWon(board);
+        spinData.BonusGameWon = BonusGameWon(board, out int bookWin);
+        spinData.BookWinMultiplier = bookWin;
         spinData.ExpandingSymbolWinID = CheckExpandingWin(expandingSymbol, board);
         spinData.ExpandingSymbolHit = spinData.ExpandingSymbolWinID >= 2;
 

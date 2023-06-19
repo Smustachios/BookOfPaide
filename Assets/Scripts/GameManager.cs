@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public ReelSpinner reelSpinner;
+    public Freespins freespin;
     public ReelManager reelManager;
     public GameObject[] gameSymbols;
     public Action<List<LineHit>> ShowLines;
     public Symbol expandingSymbol;
-    public int nOfLines = 10;
     public int nOfFreespins = 10;
     public int freespinsLeft = 0;
 
@@ -55,11 +55,12 @@ public class GameManager : MonoBehaviour
     {
         if (spinCompleted)
         {
+            coinManager.uiStrings.GoodLuckText();
             spinCompleted = false;
 
             if (!FreespinsActivated)
             {
-                coinManager.MakeBet(nOfLines);
+                coinManager.MakeBet();
             }
             else
             {
@@ -69,15 +70,13 @@ public class GameManager : MonoBehaviour
             spinData = GetSpinData();
 
             reelSpinner.SpinReels(spinData.RandomReelSpots);
-
-            PrintDebug(spinData);
         }
     }
 
     private void FinishSpin()
     {
         ShowLines.Invoke(spinData.LineHits);
-        coinManager.GetLineWins(spinData, nOfLines);
+        coinManager.GetLineWins(spinData);
 
         if (spinData.BonusGameWon)
         {
@@ -85,8 +84,7 @@ public class GameManager : MonoBehaviour
             {
                 FreespinsActivated = true;
                 expandingSymbol = spinData.ExpandingSymbol;
-                reelManager.ClearReels();
-                reelManager.MakeBonusReels(gameSymbols);
+                freespin.StartFreespins(spinData.RandomExpaningReelSpot);
             }
             else
             {
@@ -96,7 +94,6 @@ public class GameManager : MonoBehaviour
         else
         {
             coinManager.GetTotalWin();
-            PrintCoinDebug(coinManager.TotalWin);
             coinManager.ClearWins();
         }
 
@@ -107,30 +104,15 @@ public class GameManager : MonoBehaviour
     {
         if (!FreespinsActivated)
         {
-            spinData = gamePlay.Spin(FreespinsActivated, coinManager.BetPerLine, nOfLines);
+            spinData = gamePlay.Spin(FreespinsActivated, coinManager.CoinsPerLine, coinManager.NOfLines);
 
             return spinData;
         }
         else
         {
-            spinData = gamePlay.Spin(FreespinsActivated, coinManager.BetPerLine, nOfLines, expandingSymbol);
+            spinData = gamePlay.Spin(FreespinsActivated, coinManager.CoinsPerLine, coinManager.NOfLines, expandingSymbol);
 
             return spinData;
         }
-    }
-
-    private void PrintDebug(SpinData spinData)
-    {
-        Debug.Log(spinData.ToString());
-
-        foreach (string boardLine in spinData.boardStrings)
-        {
-            Debug.Log(boardLine + "\n");
-        }
-    }
-
-    private void PrintCoinDebug(decimal totalWin)
-    {
-        Debug.Log($"totalWin: {totalWin}, bankroll: {coinManager.Bankroll}");
     }
 }
