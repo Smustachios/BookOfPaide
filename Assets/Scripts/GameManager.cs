@@ -104,13 +104,13 @@ public class GameManager : MonoBehaviour
     {
         if (!FreespinsActivated)
         {
-            spinData = gamePlay.Spin(FreespinsActivated, coinManager.CoinsPerLine, coinManager.NOfLines);
+            spinData = gamePlay.Spin(FreespinsActivated, coinManager.NOfLines);
 
             return spinData;
         }
         else
         {
-            spinData = gamePlay.Spin(FreespinsActivated, coinManager.CoinsPerLine, coinManager.NOfLines, expandingSymbol);
+            spinData = gamePlay.Spin(FreespinsActivated, coinManager.NOfLines, expandingSymbol);
 
             return spinData;
         }

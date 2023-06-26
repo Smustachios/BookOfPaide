@@ -1,16 +1,20 @@
+/// <summary>
+/// Spins and returns spin data for the game. Needs to know if it needs to spin base or bonus game.
+/// </summary>
 public class BOPGamePlay
 {
     private BaseGame baseGame = new();
     private BonusGame bonusGame = new();
 
 
-    public SpinData Spin(bool freespinsActive, decimal lineBet, int nOfLines, Symbol expandingSymbol = Symbol.Book)
+    // Spin the game. If freespins are activated needs to be provided expanding symbol aswell.
+    public SpinData Spin(bool freespinsActive, int nOfLines, Symbol expandingSymbol = Symbol.Book)
     {
         SpinData spinData;
 
         if (!freespinsActive)
         {
-            spinData = CompleteSpin(lineBet, nOfLines);
+            spinData = CompleteSpin(nOfLines);
 
             if (spinData.BonusGameWon)
             {
@@ -20,41 +24,27 @@ public class BOPGamePlay
 
         else
         {
-            spinData = CompleteFreeSpin(expandingSymbol, lineBet, nOfLines);
+            spinData = CompleteFreeSpin(expandingSymbol, nOfLines);
         }
 
         return spinData;
     }
 
-    private SpinData CompleteSpin(decimal lineBet, int nOfLines)
+    private SpinData CompleteSpin(int nOfLines)
     {
         SpinData spinData = baseGame.Spin(nOfLines);
 
-        foreach (LineHit hit in spinData.LineHits)
-        {
-            spinData.SpinWin += lineBet * hit.WinMultiplier;
-        }
-
         return spinData;
     }
 
-    private SpinData CompleteFreeSpin(Symbol expandingSymbol, decimal lineBet, int nOfLines)
+    private SpinData CompleteFreeSpin(Symbol expandingSymbol, int nOfLines)
     {
         SpinData spinData = bonusGame.Spin(nOfLines, expandingSymbol);
 
-        foreach (LineHit hit in spinData.LineHits)
-        {
-            spinData.SpinWin += lineBet * hit.WinMultiplier;
-        }
-
-        if (spinData.ExpandingSymbolWinID != 0)
-        {
-            spinData.SpinWin += spinData.ExpandingSymbolMultiplier * lineBet * nOfLines;
-        }
-
         return spinData;
     }
 
+    // If base game activates freespins make a expanding symbol and return to external caller for to be feed back later.
     private void ActivateFreespins(SpinData data)
     {
         data.ExpandingSymbol = Reels.GetRandomExpandingSymbol(out int randomExpandingReelSpot);

@@ -1,3 +1,7 @@
+/// <summary>
+/// Board of the game. Holds symbols on as arrays once they are put on the board randomly.
+/// Also holds values of the last spins reel random spots, from where the symbols were taken.
+/// </summary>
 public class Board
 {
     public Symbol[][] GameBoard { get; private set; }
