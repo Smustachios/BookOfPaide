@@ -1,3 +1,6 @@
+/// <summary>
+/// Book of Paide symbols.
+/// </summary>
 public enum Symbol
 {
     Ten,

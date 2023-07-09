@@ -1,3 +1,7 @@
+/// <summary>
+/// Book of Paide paytable.
+/// Returns bet multiplier according to win id and win symbol.
+/// </summary>
 public class Paytable
 {
     public static int GetWinMultiplier(int winId, Symbol winSymbol)

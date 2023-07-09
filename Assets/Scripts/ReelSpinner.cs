@@ -8,9 +8,10 @@ public class ReelSpinner : MonoBehaviour
     public Action reelsStopped;
     public Action expandingReelStopped;
 
-    private int preSpinLenght = 45;
+    private readonly int preSpinLenght = 45;
 
 
+    // Spin main game reels
     public void SpinReels(int[] randomReelPos)
     {
         foreach (GameObject reel in reelManager.reels)
@@ -26,38 +27,45 @@ public class ReelSpinner : MonoBehaviour
 
     private IEnumerator MoveReel(int[] randomReelPos, Transform reelTransform)
     {
-        ReelConstructor reelData = reelTransform.GetComponent<ReelConstructor>();
+        ReelConstructor reelData = reelTransform.GetComponent<ReelConstructor>(); // Every reel spins different lenght of time, get data from each reel.
 
+        // Prespin each reel.
         for (int i = 0; i < preSpinLenght * 4; i++)
         {
             reelTransform.position -= new Vector3(0, 0.25f);
             yield return new WaitForSeconds(0.002f);
         }
 
+        // Setup positions for animation.
         Vector3 finalPos = new (reelTransform.position.x, -(randomReelPos[reelData.reelId] * 3) + 3);
         Vector3 startPos = finalPos - new Vector3(0, -reelData.animationOffset);
 
         reelTransform.position = startPos;
 
+        // Spin each reel to final position.
         for (int i = 0; i < reelData.animationOffset * 4; i++)
         {
             reelTransform.position -= new Vector3(0, 0.25f);
             yield return new WaitForSeconds(0.005f);
         }
 
+        // If last reel has finished spinning, let gameManager know and continue with spin sequence.
         if (reelData.reelId == 4)
         {
             reelsStopped.Invoke();
         }
     }
 
+    // Spin expanding reel
     private IEnumerator MoveExpandingReel(int randomPosition, Transform reelTransform)
     {
-        Vector3 finalPos = new Vector3(reelTransform.position.x, -(randomPosition * 5) + 5);
+        // Setup positions for animation.
+        Vector3 finalPos = new (reelTransform.position.x, -(randomPosition * 5) + 5);
         Vector3 startPos = finalPos - new Vector3(0, -(12 * 5));
 
         reelTransform.position = startPos;
 
+        // "Spin" expanding reel.
         for (int i = 0; i <= 12;  i++)
         {
             reelTransform.position += new Vector3(0, -5);
@@ -66,6 +74,7 @@ public class ReelSpinner : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
+        // Let freespins know expanding reel has finished to continue with the sequence.
         expandingReelStopped.Invoke();
     }
 }

@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Make reels in the game.
+/// </summary>
 public class ReelManager : MonoBehaviour
 {
     public GameObject[] reels;
@@ -10,6 +12,7 @@ public class ReelManager : MonoBehaviour
     public SpriteMask expandingReelMask;
 
 
+    // Clears all 5 reels at the start of the freespins or at the end of the freespins.
     public void ClearReels()
     {
         foreach (GameObject reel in reels)
@@ -47,6 +50,7 @@ public class ReelManager : MonoBehaviour
         constructor.DestroyReel();
     }
 
+    // Change sprite masks for the duratation of the expanding reel spin animation.
     public void EnableFreespinMask()
     {
         baseReelMask.enabled = false;

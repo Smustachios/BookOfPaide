@@ -1,6 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Use to construct or destroy reels in the scene.
+/// </summary>
 public class ReelConstructor : MonoBehaviour
 {
     public int reelId = -1;

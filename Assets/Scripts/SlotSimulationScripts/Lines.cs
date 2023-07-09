@@ -28,7 +28,7 @@ public class Lines
 
     public List<int[]> GetGameLines(int nOfLines)
     {
-        List<int[]> gameLines = new List<int[]>();
+        List<int[]> gameLines = new ();
 
         for (int c = 0; c < nOfLines; c++)
         {

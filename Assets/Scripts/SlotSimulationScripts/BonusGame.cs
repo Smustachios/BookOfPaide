@@ -53,6 +53,7 @@ public class BonusGame : BaseGame
     private int CountSymbols(Symbol expandingSymbol, Board board)
     {
         int symbolCounter = 0;
+        expandingSymbolLineId.Clear();
 
         for (int c = 0; c < board.GameBoard.Length; c++)
         {
