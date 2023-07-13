@@ -38,9 +38,17 @@ public class ShowLine : MonoBehaviour
     {
         foreach (LineHit lineHit in winLines)
         {
-            lines[lineHit.LineId - 1].spriteRenderer.enabled = true;
-            yield return new WaitForSeconds(0.5f);
-            lines[lineHit.LineId - 1].spriteRenderer.enabled = false;
+            GameLine line = lines[lineHit.LineId - 1];
+
+            // Show line and win text
+            line.spriteRenderer.enabled = true;
+            ShowLineWinText(lineHit, line);
+            yield return new WaitForSeconds(0.6f);
+
+            // Turn everything off again
+            line.spriteRenderer.enabled = false;
+            line.smallWinBar.enabled = false;
+            line.bigWinBar.enabled = false;
         }
 
         // These need to be checked here to play animations after lines are shown.
@@ -62,6 +70,21 @@ public class ShowLine : MonoBehaviour
         foreach (GameLine line in lines)
         {
             line.spriteRenderer.enabled = false;
+        }
+    }
+
+    // Changes and turns on line win text on top of the win line
+    private void ShowLineWinText(LineHit data, GameLine line)
+    {
+        if (data.WinId < 4)
+        {
+            line.smallWinBar.text = data.WinMultiplier.ToString();
+            line.smallWinBar.enabled = true;
+        }
+        else
+        {
+            line.bigWinBar.text = data.WinMultiplier.ToString();
+            line.bigWinBar.enabled = true;
         }
     }
 }

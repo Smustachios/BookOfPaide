@@ -9,9 +9,9 @@ public class ReelSpinner : MonoBehaviour
     public Action expandingReelStopped;
 
     private readonly int preSpinLenght = 45;
-    private Vector3 offset = new Vector3(0, 0.25f);
-    private float prespinDelay = 0.002f;
-    private float spinDelay = 0.005f;
+    private Vector3 offset = new Vector3(0, 1f);
+    private float prespinDelay = 0.01f;
+    private float spinDelay = 0.02f;
 
     // Spin main game reels
     public void SpinReels(int[] randomReelPos)
@@ -32,7 +32,7 @@ public class ReelSpinner : MonoBehaviour
         ReelConstructor reelData = reelTransform.GetComponent<ReelConstructor>(); // Every reel spins different lenght of time, get data from each reel.
 
         // Prespin each reel.
-        for (int i = 0; i < preSpinLenght * 4; i++)
+        for (int i = 0; i < preSpinLenght; i++)
         {
             reelTransform.position -= offset;
             yield return new WaitForSecondsRealtime(prespinDelay);
@@ -45,7 +45,7 @@ public class ReelSpinner : MonoBehaviour
         reelTransform.position = startPos;
 
         // Spin each reel to final position.
-        for (int i = 0; i < reelData.animationOffset * 4; i++)
+        for (int i = 0; i < reelData.animationOffset; i++)
         {
             reelTransform.position -= offset;
             yield return new WaitForSecondsRealtime(spinDelay);
@@ -71,7 +71,7 @@ public class ReelSpinner : MonoBehaviour
         for (int i = 0; i <= 12;  i++)
         {
             reelTransform.position += new Vector3(0, -5);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
         }
 
         yield return new WaitForSeconds(2.0f);

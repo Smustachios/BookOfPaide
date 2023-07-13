@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 
 /// <summary>
@@ -8,6 +9,8 @@ public class GameLine : MonoBehaviour
 {
     public int lineID;
     public SpriteRenderer spriteRenderer;
+    public TextMeshPro smallWinBar;
+    public TextMeshPro bigWinBar;
 
 
     private void Awake()

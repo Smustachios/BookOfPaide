@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public ReelManager reelManager;
     public ExpandingSymbol expandingSymbolManager;
     public ShowLine lineAnimations;
+    public AutoSpin autoSpin;
 
     public GameObject[] gameSymbols;
     public GameObject payTable;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
             {
                 freespinsLeft = nOfFreespins; // Give player freespins at the start of bonus.
                 totalFreespins += nOfFreespins;
+                autoSpin.NOfAutoSpins = 0;
             }
             else
             {
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour
         if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated)
         {
             spinCompleted = false; // Cant press spin button again.
+            autoSpin.spinActive = true;
 
             if (payTable.activeInHierarchy == true)
             {
@@ -139,6 +142,7 @@ public class GameManager : MonoBehaviour
         }
 
         spinCompleted = true;
+        autoSpin.spinActive = false;
     }
 
     // Show expanding symbols.

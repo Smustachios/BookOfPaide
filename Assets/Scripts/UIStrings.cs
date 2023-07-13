@@ -17,6 +17,7 @@ public class UIStrings : MonoBehaviour
     public TextMeshProUGUI freespinsLeftString;
     public TextMeshProUGUI congratsString;
     public TextMeshProUGUI balanceString;
+    public TextMeshProUGUI autospinsText;
 
 
     // Shows how many lines player using.
@@ -77,5 +78,11 @@ public class UIStrings : MonoBehaviour
     public void UpdateBalanceString(decimal balance)
     {
         balanceString.text = $"BALANCE: {System.Math.Round(balance, 2)}";
+    }
+
+    // Update number of autospins
+    public void UpdateAutospinsString(string message)
+    {
+        autospinsText.text = message;
     }
 }
