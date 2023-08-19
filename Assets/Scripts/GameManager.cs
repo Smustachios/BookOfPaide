@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SpinType { Normal, Tease }
+
+/// <summary>
+/// Manages game flow.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public ReelSpinner reelSpinner;

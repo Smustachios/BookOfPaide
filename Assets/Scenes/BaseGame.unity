@@ -2616,6 +2616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 371073771}
   - component: {fileID: 371073772}
+  - component: {fileID: 371073773}
   m_Layer: 6
   m_Name: ReelFour
   m_TagString: Untagged
@@ -2654,6 +2655,19 @@ MonoBehaviour:
   placementOffset: 3
   animationOffset: 36
   positionTracker: -3
+--- !u!114 &371073773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371073770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preSpinLenght: 9
 --- !u!1 &389299712
 GameObject:
   m_ObjectHideFlags: 0
@@ -3162,7 +3176,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 166.3}
+  m_AnchoredPosition: {x: -36, y: 215.29999}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &474032696
@@ -3241,7 +3255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -230, y: 70}
+  m_AnchoredPosition: {x: -266, y: 119}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &493869534
@@ -4452,7 +4466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 122, y: -41}
+  m_AnchoredPosition: {x: 272, y: -116}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846056907
@@ -4951,10 +4965,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -5211,7 +5225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 467, y: 144}
+  m_AnchoredPosition: {x: 431, y: 193}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &987172023
@@ -6459,7 +6473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 70}
+  m_AnchoredPosition: {x: -36, y: 119}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1159519328
@@ -7151,7 +7165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 466, y: 86}
+  m_AnchoredPosition: {x: 430, y: 135}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1327162018
@@ -10024,6 +10038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1741654127}
   - component: {fileID: 1741654128}
+  - component: {fileID: 1741654129}
   m_Layer: 6
   m_Name: ReelFive
   m_TagString: Untagged
@@ -10062,6 +10077,19 @@ MonoBehaviour:
   placementOffset: 3
   animationOffset: 45
   positionTracker: -3
+--- !u!114 &1741654129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741654126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preSpinLenght: 9
 --- !u!1 &1758173840
 GameObject:
   m_ObjectHideFlags: 0
@@ -10072,6 +10100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758173841}
   - component: {fileID: 1758173842}
+  - component: {fileID: 1758173843}
   m_Layer: 6
   m_Name: ReelTwo
   m_TagString: Untagged
@@ -10110,6 +10139,19 @@ MonoBehaviour:
   placementOffset: 3
   animationOffset: 18
   positionTracker: -3
+--- !u!114 &1758173843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758173840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preSpinLenght: 9
 --- !u!1 &1760303147
 GameObject:
   m_ObjectHideFlags: 0
@@ -10425,6 +10467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1786930485}
   - component: {fileID: 1786930486}
+  - component: {fileID: 1786930487}
   m_Layer: 6
   m_Name: ReelThree
   m_TagString: Untagged
@@ -10463,6 +10506,19 @@ MonoBehaviour:
   placementOffset: 3
   animationOffset: 27
   positionTracker: -3
+--- !u!114 &1786930487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786930484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preSpinLenght: 9
 --- !u!1 &1813919149
 GameObject:
   m_ObjectHideFlags: 0
@@ -10671,7 +10727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -464, y: 175}
+  m_AnchoredPosition: {x: -500, y: 224}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1830636669
@@ -11194,7 +11250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 626.1, y: 85.900024}
+  m_AnchoredPosition: {x: 590.1, y: 134.90002}
   m_SizeDelta: {x: 140.2428, y: 114.1311}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1916970788
@@ -11632,7 +11688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 230, y: 70}
+  m_AnchoredPosition: {x: 194, y: 119}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1942637501
@@ -11683,6 +11739,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1943860000}
   - component: {fileID: 1943860001}
+  - component: {fileID: 1943860002}
   m_Layer: 6
   m_Name: ReelOne
   m_TagString: Untagged
@@ -11721,6 +11778,19 @@ MonoBehaviour:
   placementOffset: 3
   animationOffset: 9
   positionTracker: -3
+--- !u!114 &1943860002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943859999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preSpinLenght: 9
 --- !u!1 &1968539399
 GameObject:
   m_ObjectHideFlags: 0
@@ -11757,7 +11827,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -464, y: 112}
+  m_AnchoredPosition: {x: -500, y: 161}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1968539401

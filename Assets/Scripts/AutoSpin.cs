@@ -38,7 +38,14 @@ public class AutoSpin : MonoBehaviour
     // Start 50 spins if player presses auto spin button.
     public void AutoSpinButton()
     {
-        NOfAutoSpins = 50;
+        if (NOfAutoSpins == 0)
+        {
+            NOfAutoSpins = 50;
+        }
+        else
+        {
+            NOfAutoSpins = 0;
+        }
     }
 
     // Game manager will change spin active to false at the end of the spin, if auto spins are still active

@@ -54,6 +54,7 @@ public class ReelSpinner : MonoBehaviour
         // If last reel has finished spinning, let gameManager know and continue with spin sequence.
         if (reelData.reelId == 4)
         {
+            yield return new WaitForSeconds(0.25f);
             reelsStopped.Invoke();
         }
     }
