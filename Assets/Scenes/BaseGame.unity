@@ -2667,7 +2667,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preSpinLenght: 9
+  reelId: 4
+  preSpinLenght: 18
+  spinLenght: 36
+  spinSpeed: 200
 --- !u!1 &389299712
 GameObject:
   m_ObjectHideFlags: 0
@@ -4208,6 +4211,12 @@ MonoBehaviour:
   - {fileID: 1786930484}
   - {fileID: 371073770}
   - {fileID: 1741654126}
+  reelSpinners:
+  - {fileID: 1943860002}
+  - {fileID: 1758173843}
+  - {fileID: 1786930487}
+  - {fileID: 371073773}
+  - {fileID: 1741654129}
   expandingReel: {fileID: 1139935838}
   baseReelMask: {fileID: 213741722}
   expandingReelMask: {fileID: 1727940555}
@@ -10089,7 +10098,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preSpinLenght: 9
+  reelId: 5
+  preSpinLenght: 18
+  spinLenght: 45
+  spinSpeed: 200
 --- !u!1 &1758173840
 GameObject:
   m_ObjectHideFlags: 0
@@ -10151,7 +10163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preSpinLenght: 9
+  reelId: 2
+  preSpinLenght: 18
+  spinLenght: 18
+  spinSpeed: 200
 --- !u!1 &1760303147
 GameObject:
   m_ObjectHideFlags: 0
@@ -10518,7 +10533,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preSpinLenght: 9
+  reelId: 3
+  preSpinLenght: 18
+  spinLenght: 27
+  spinSpeed: 200
 --- !u!1 &1813919149
 GameObject:
   m_ObjectHideFlags: 0
@@ -11790,7 +11808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ba184ea8064a4a8441df8f5aefad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preSpinLenght: 9
+  reelId: 1
+  preSpinLenght: 18
+  spinLenght: 9
+  spinSpeed: 200
 --- !u!1 &1968539399
 GameObject:
   m_ObjectHideFlags: 0

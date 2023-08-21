@@ -71,11 +71,13 @@ public class GameManager : MonoBehaviour
     {
         // Once last reel has stopped spinning it will notify here to continue with the spin sequence.
         reelSpinner.reelsStopped += FinishSpin;
+        EventCenter.reelsStopped += FinishSpin;
     }
 
     private void OnDisable()
     {
         reelSpinner.reelsStopped -= FinishSpin;
+        EventCenter.reelsStopped -= FinishSpin;
     }
 
     // This method is called when player presses spin button.
@@ -91,7 +93,7 @@ public class GameManager : MonoBehaviour
                 payTable.SetActive(false);
             }
 
-            // Take money from player if base spin or decrease freespins if freespin.
+            // Take money from player if base spin or decrease free spins if free spin.
             if (!FreespinsActivated)
             {
                 coinManager.MakeBet();
@@ -106,7 +108,18 @@ public class GameManager : MonoBehaviour
 
             spinData = GetSpinData(); // Spin vitrual reels to get all the data.
 
-            reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
+            // reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
+            reelManager.SpinReels(spinData);
+
+            foreach (int randomSpot in spinData.RandomReelSpots)
+            {
+                Debug.Log(randomSpot);
+            }
+
+            foreach (LineHit hit in spinData.LineHits)
+            {
+                Debug.Log(hit.WinSymbol);
+            }
         }
     }
 
