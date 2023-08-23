@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class ReelManager : MonoBehaviour
 {
-    public GameObject[] reels;
     public SpinReel[] reelSpinners;
+    public ReelConstructor[] reelConstructors;
     public GameObject expandingReel;
     public SpriteMask baseReelMask;
     public SpriteMask expandingReelMask;
@@ -21,7 +21,7 @@ public class ReelManager : MonoBehaviour
     {
         _spinData = spinData;
         
-        for (int i = 0; i < reels.Length; i++)
+        for (int i = 0; i < reelSpinners.Length; i++)
         {
             reelSpinners[i].StartSpin(SpinType.Normal, _spinData.RandomReelSpots[i]);
         }
@@ -30,27 +30,25 @@ public class ReelManager : MonoBehaviour
     // Clears all 5 reels at the start of the freespins or at the end of the freespins.
     public void ClearReels()
     {
-        foreach (GameObject reel in reels)
+        foreach (ReelConstructor constructor in reelConstructors)
         {
-            ReelConstructor constructor = reel.GetComponent<ReelConstructor>();
             constructor.DestroyReel();
         }
     }
 
     public void MakeBaseReels(GameObject[] gameSymbols)
     {
-        foreach (GameObject reel in reels)
+        foreach (ReelConstructor constructor in reelConstructors)
         {
-            reel.GetComponent<ReelConstructor>().MakeBaseReel(gameSymbols);
+            constructor.MakeReel(gameSymbols, false);
         }
     }
 
     public void MakeBonusReels(GameObject[] gameSymbols)
     {
-        foreach (GameObject reel in reels)
+        foreach (ReelConstructor constructor in reelConstructors)
         {
-            ReelConstructor constructor = reel.GetComponent<ReelConstructor>();
-            constructor.MakeBonusReel(gameSymbols);
+            constructor.MakeReel(gameSymbols, true);
         }
     }
 

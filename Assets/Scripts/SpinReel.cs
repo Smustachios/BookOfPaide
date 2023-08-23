@@ -1,8 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spins reels in the game. Each reel has own component.
+/// </summary>
 public class SpinReel : MonoBehaviour
 {
     [SerializeField] private int reelId;
@@ -12,9 +12,11 @@ public class SpinReel : MonoBehaviour
 
     private Transform _transform;
     private Vector3 _finalPos;
+    private Vector3 _bumpPos;
     private Vector3 _startPos;
     private Vector3 _endPreSpinPos;
     private bool _preSpinActive = false;
+    private bool _bumpActive = false;
     private bool _spinActive = false;
 
 
@@ -22,41 +24,53 @@ public class SpinReel : MonoBehaviour
     {
         _transform = transform;
     }
-
+    
+    // Once reel reaches final pos, turn update off.
     private void Update()
     {
         if (_preSpinActive)
         {
-            _transform.Translate(new Vector3(0, -0.25f) * spinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, -0.5f) * spinSpeed * Time.deltaTime);
 
-            if (_transform.position.y <= _endPreSpinPos.y)
-            {
-                _transform.position = _startPos;
-                _spinActive = true;
-                _preSpinActive = false;
-            }
+            if (!(_transform.position.y <= _endPreSpinPos.y)) return;
+            
+            _transform.position = _startPos;
+            _bumpActive = true;
+            _preSpinActive = false;
+        }
+        else if (_bumpActive)
+        {
+            _transform.Translate(new Vector3(0, -0.5f) * spinSpeed * Time.deltaTime);
+
+            if (!(_transform.position.y <= _bumpPos.y)) return;
+            
+            _transform.position = _bumpPos;
+            _spinActive = true;
+            _bumpActive = false;
         }
         else if (_spinActive)
         {
-            _transform.Translate(new Vector3(0, -0.25f) * spinSpeed * Time.deltaTime);
-            
-            if (_transform.position.y <= _finalPos.y)
-            {
-                _transform.position = _finalPos;
-                _spinActive = false;
-                enabled = false;
+            _transform.Translate(new Vector3(0, 0.5f) * spinSpeed * Time.deltaTime);
 
-                if (reelId == 5)
-                {
-                    EventCenter.reelsStopped.Invoke();
-                }
+            if (!(_transform.position.y >= _finalPos.y)) return;
+            
+            _transform.position = _finalPos;
+            _spinActive = false;
+            enabled = false;
+
+            // Once last reel stops tell continue with the rest of the sequence.
+            if (reelId == 5)
+            {
+                EventCenter.reelsStopped.Invoke();
             }
         }
     }
 
+    // Start animation from here.
     public void StartSpin(SpinType spinType, int randomReelPos)
     {
-        _finalPos = new Vector3(transform.position.x ,-randomReelPos * 3 + 3);
+        _finalPos = new Vector3(_transform.position.x ,-randomReelPos * 3 + 3);
+        _bumpPos = new Vector3(_transform.position.x, _finalPos.y - 1.5f);
         _startPos = _finalPos + new Vector3(0, spinLenght);
         _endPreSpinPos = _transform.position - new Vector3(0, preSpinLenght);
 

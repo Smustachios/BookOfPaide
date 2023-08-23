@@ -13,50 +13,9 @@ public class ReelSpinner : MonoBehaviour
     private float prespinDelay = 0.01f;
     private float spinDelay = 0.02f;
 
-    // Spin main game reels
-    public void SpinReels(int[] randomReelPos)
-    {
-        foreach (GameObject reel in reelManager.reels)
-        {
-            StartCoroutine(MoveReel(randomReelPos, reel.transform));
-        }
-    }
-
     public void SpinExpandingReel(int randomPos)
     {
         StartCoroutine(MoveExpandingReel(randomPos, reelManager.expandingReel.transform));
-    }
-
-    private IEnumerator MoveReel(int[] randomReelPos, Transform reelTransform)
-    {
-        ReelConstructor reelData = reelTransform.GetComponent<ReelConstructor>(); // Every reel spins different lenght of time, get data from each reel.
-
-        // Prespin each reel.
-        for (int i = 0; i < preSpinLenght; i++)
-        {
-            reelTransform.position -= offset;
-            yield return new WaitForSecondsRealtime(prespinDelay);
-        }
-
-        // Setup positions for animation.
-        Vector3 finalPos = new(reelTransform.position.x, -(randomReelPos[reelData.reelId] * 3) + 3);
-        Vector3 startPos = finalPos - new Vector3(0, -reelData.animationOffset);
-
-        reelTransform.position = startPos;
-
-        // Spin each reel to final position.
-        for (int i = 0; i < reelData.animationOffset; i++)
-        {
-            reelTransform.position -= offset;
-            yield return new WaitForSecondsRealtime(spinDelay);
-        }
-
-        // If last reel has finished spinning, let gameManager know and continue with spin sequence.
-        if (reelData.reelId == 4)
-        {
-            yield return new WaitForSeconds(0.25f);
-            reelsStopped.Invoke();
-        }
     }
 
     // Spin expanding reel
