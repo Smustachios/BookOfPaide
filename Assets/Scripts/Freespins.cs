@@ -86,7 +86,7 @@ public class Freespins : MonoBehaviour
         openBook.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
 
         // Set up bonus reels and reset spritemasks.
-        reelManager.DisableFreespinMask();
+        reelManager.DisableFreeSpinMask();
         reelManager.MakeBonusReels(gameManager.gameSymbols);
 
         // Set up UI.
@@ -111,7 +111,7 @@ public class Freespins : MonoBehaviour
         reelManager.ClearReels();
 
         // Set up expanding reel.
-        reelManager.EnableFreespinMask();
+        reelManager.EnableFreeSpinMask();
         reelManager.MakeExpandingReel(gameManager.gameSymbols);
     }
 

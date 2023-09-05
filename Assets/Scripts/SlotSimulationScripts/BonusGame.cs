@@ -17,7 +17,9 @@ public class BonusGame : BaseGame
 
         spinData.LineHits = CheckLines(board, nOfLines);
         spinData.RandomReelSpots = board.RandomReelSpots;
-        spinData.BonusGameWon = BonusGameWon(board, out int bookWin); // Bonus can be retriggered with active bonus.
+        spinData.BonusGameWon = BonusGameWon(board, out int bookWin); // Bonus can be re triggered with active bonus.
+        spinData.IsTease = isTease;
+        spinData.StartTeaseReel = startTeaseReel;
         spinData.BookWinMultiplier = bookWin;
 
         // Set expanding symbol wins data

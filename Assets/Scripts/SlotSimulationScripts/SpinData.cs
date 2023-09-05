@@ -12,6 +12,8 @@ public class SpinData
     public List<LineHit> LineHits { get; internal set; } // All line hit data. Only has data from lines that actually hitted something.
     public bool BonusGameWon { get; internal set; } = false;
     public int BookWinMultiplier { get; internal set; }
+    public bool IsTease { get; internal set; } = false;
+    public int StartTeaseReel { get; internal set; } = -1;
 
     // This data will only be filled if spin was freespin.
     public Symbol ExpandingSymbol { get; internal set; }

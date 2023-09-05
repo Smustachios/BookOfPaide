@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8206381255234948894}
   - component: {fileID: 8206381255234948895}
+  - component: {fileID: 1830700669950279339}
   m_Layer: 0
   m_Name: RoltsSymbol
   m_TagString: Untagged
@@ -84,3 +85,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1830700669950279339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206381255234948892}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea57a2a7f44b9a48839185124264017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolId: 8

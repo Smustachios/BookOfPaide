@@ -8,6 +8,7 @@ using UnityEngine;
 public class ReelManager : MonoBehaviour
 {
     public SpinReel[] reelSpinners;
+    public ActiveSymbols[] reelActiveSymbols;
     public ReelConstructor[] reelConstructors;
     public GameObject expandingReel;
     public SpriteMask baseReelMask;
@@ -17,13 +18,26 @@ public class ReelManager : MonoBehaviour
 
     
     // Spin all reels
-    public void SpinReels(SpinData spinData)
+    public void SpinReels(SpinData spinData, bool isTease, int startTeaseReel)
     {
         _spinData = spinData;
         
+        SpinType spinType = isTease ? SpinType.Tease : SpinType.Normal;
+        
         for (int i = 0; i < reelSpinners.Length; i++)
         {
-            reelSpinners[i].StartSpin(SpinType.Normal, _spinData.RandomReelSpots[i]);
+            reelSpinners[i].StartSpin(spinType, _spinData.RandomReelSpots[i], startTeaseReel);
+        }
+        
+        SetUpActiveSymbols();
+    }
+    
+    // Set up active symbols.
+    public void SetUpActiveSymbols()
+    {
+        for (int i = 0; i < _spinData.RandomReelSpots.Length; i++)
+        {
+            reelActiveSymbols[i].GetActiveSymbols(_spinData.RandomReelSpots[i]);
         }
     }
     
@@ -63,14 +77,14 @@ public class ReelManager : MonoBehaviour
         constructor.DestroyReel();
     }
 
-    // Change sprite masks for the duratation of the expanding reel spin animation.
-    public void EnableFreespinMask()
+    // Change sprite masks for the duration of the expanding reel spin animation.
+    public void EnableFreeSpinMask()
     {
         baseReelMask.enabled = false;
         expandingReelMask.enabled = true;
     }
 
-    public void DisableFreespinMask()
+    public void DisableFreeSpinMask()
     {
         baseReelMask.enabled = true;
         expandingReelMask.enabled = false;

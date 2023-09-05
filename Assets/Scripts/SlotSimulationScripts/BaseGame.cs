@@ -8,6 +8,8 @@ public class BaseGame
 {
     protected Reels reels = new();
     protected Lines lines = new();
+    protected bool isTease = false;
+    protected int startTeaseReel = -1;
     
 
     // Make and return base spin data
@@ -19,6 +21,8 @@ public class BaseGame
         spinData.LineHits = CheckLines(board, nOfLines);
         spinData.RandomReelSpots = board.RandomReelSpots;
         spinData.BonusGameWon = BonusGameWon(board, out int bookWin);
+        spinData.IsTease = isTease;
+        spinData.StartTeaseReel = startTeaseReel;
         spinData.BookWinMultiplier = bookWin;
 
         return spinData;
@@ -99,14 +103,18 @@ public class BaseGame
     private int GetBookCount(Board board)
     {
         int bookCounter = 0;
+        isTease = false;
+        startTeaseReel = -1;
 
-        foreach (Symbol[] symbols in board.GameBoard)
+        for (int i = 0; i < board.GameBoard.Length; i++)
         {
-            foreach (Symbol symbol in symbols)
+            foreach (Symbol symbol in board.GameBoard[i])
             {
                 if (symbol == Symbol.Book)
                 {
                     bookCounter++;
+
+                    CheckTease(bookCounter, i);
                 }
             }
         }
@@ -121,5 +129,15 @@ public class BaseGame
         if (bookCount == 3) return 2;
         else if (bookCount == 4) return 20;
         else { return 200; }
+    }
+    
+    // Check if spin is tease spin.
+    private void CheckTease(int bookCount, int reelId)
+    {
+        if (bookCount == 2 && reelId != 4)
+        {
+            isTease = true;
+            startTeaseReel = reelId + 2;
+        }
     }
 }

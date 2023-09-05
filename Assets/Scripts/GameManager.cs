@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] gameSymbols;
     public GameObject payTable;
-    public Action<List<LineHit>> ShowLines;
     public Symbol expandingSymbol;
     public int nOfFreespins = 10;
     public int freespinsLeft = 0;
@@ -70,13 +69,11 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         // Once last reel has stopped spinning it will notify here to continue with the spin sequence.
-        reelSpinner.reelsStopped += FinishSpin;
         EventCenter.reelsStopped += FinishSpin;
     }
 
     private void OnDisable()
     {
-        reelSpinner.reelsStopped -= FinishSpin;
         EventCenter.reelsStopped -= FinishSpin;
     }
 
@@ -88,7 +85,7 @@ public class GameManager : MonoBehaviour
             spinCompleted = false; // Cant press spin button again.
             autoSpin.spinActive = true;
 
-            if (payTable.activeInHierarchy == true)
+            if (payTable.activeInHierarchy)
             {
                 payTable.SetActive(false);
             }
@@ -106,15 +103,10 @@ public class GameManager : MonoBehaviour
                 coinManager.uiStrings.UpdateFreespinsLeft(freespinsLeft, totalFreespins);
             }
 
-            spinData = GetSpinData(); // Spin vitrual reels to get all the data.
+            spinData = GetSpinData(); // Spin virtual reels to get all the data.
 
             // reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
-            reelManager.SpinReels(spinData);
-
-            foreach (int randomSpot in spinData.RandomReelSpots)
-            {
-                Debug.Log(randomSpot);
-            }
+            reelManager.SpinReels(spinData, spinData.IsTease, spinData.StartTeaseReel);
 
             foreach (LineHit hit in spinData.LineHits)
             {
@@ -142,14 +134,12 @@ public class GameManager : MonoBehaviour
     // Once last reel has stopped spinning, finish spinning sequence.
     private void FinishSpin()
     {
-        StartCoroutine(FinishSpinCoroutine());
+        coinManager.GetLineWins(spinData);
+        lineAnimations.ActivateLines(spinData.LineHits, reelManager.reelActiveSymbols);
     }
 
-    private IEnumerator FinishSpinCoroutine()
+    public IEnumerator FinishSpinCoroutine()
     {
-        coinManager.GetLineWins(spinData);
-        yield return lineAnimations.ActivateLines(spinData.LineHits);
-
         yield return CheckExpandingSymbol();
         FreespinCheck();
 
@@ -162,6 +152,8 @@ public class GameManager : MonoBehaviour
         spinCompleted = true;
         autoSpin.spinActive = false;
     }
+    
+    
 
     // Show expanding symbols.
     private IEnumerator CheckExpandingSymbol()
@@ -223,5 +215,11 @@ public class GameManager : MonoBehaviour
         {
             return gamePlay.Spin(FreespinsActivated, coinManager.NOfLines, expandingSymbol);
         }
+    }
+    
+    // Get spin type
+    private SpinType GetSpinType(bool isTease)
+    {
+        return isTease ? SpinType.Tease : SpinType.Normal;
     }
 }

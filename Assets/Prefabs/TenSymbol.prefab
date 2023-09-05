@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 185817104975665338}
   - component: {fileID: 185817104975665339}
+  - component: {fileID: -5716544522386810771}
   m_Layer: 0
   m_Name: TenSymbol
   m_TagString: Untagged
@@ -84,3 +85,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
+--- !u!114 &-5716544522386810771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185817104975665336}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea57a2a7f44b9a48839185124264017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolId: 0

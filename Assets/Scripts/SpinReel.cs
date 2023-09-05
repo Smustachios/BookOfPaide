@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpinReel : MonoBehaviour
 {
     [SerializeField] private int reelId;
+    [SerializeField] private float teaseAmount = 54;
     [SerializeField] private float preSpinLenght = 9.0f;
     [SerializeField] private float spinLenght = 9.0f;
     [SerializeField] private float spinSpeed = 100;
@@ -50,7 +51,7 @@ public class SpinReel : MonoBehaviour
         }
         else if (_spinActive)
         {
-            _transform.Translate(new Vector3(0, 0.5f) * spinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, 0.25f) * spinSpeed * Time.deltaTime);
 
             if (!(_transform.position.y >= _finalPos.y)) return;
             
@@ -67,14 +68,34 @@ public class SpinReel : MonoBehaviour
     }
 
     // Start animation from here.
-    public void StartSpin(SpinType spinType, int randomReelPos)
+    public void StartSpin(SpinType spinType, int randomReelPos, int startTeaseReel)
     {
         _finalPos = new Vector3(_transform.position.x ,-randomReelPos * 3 + 3);
-        _bumpPos = new Vector3(_transform.position.x, _finalPos.y - 1.5f);
-        _startPos = _finalPos + new Vector3(0, spinLenght);
+        _bumpPos = new Vector3(_transform.position.x, _finalPos.y - 3f);
+        SetStartPos(spinType, startTeaseReel);
         _endPreSpinPos = _transform.position - new Vector3(0, preSpinLenght);
 
         _preSpinActive = true;
         enabled = true;
+    }
+
+    private void SetStartPos(SpinType spinType, int startTeaseReel)
+    {
+        if (spinType == SpinType.Normal)
+        {
+            _startPos = _finalPos + new Vector3(0, spinLenght);
+        }
+        else
+        {
+            if (reelId < startTeaseReel)
+            {
+                _startPos = _finalPos + new Vector3(0, spinLenght);
+            }
+            else
+            {
+                int teaseMultiplier = reelId - startTeaseReel + 1;
+                _startPos = _finalPos + new Vector3(0, spinLenght + teaseAmount * teaseMultiplier);
+            }
+        }
     }
 }

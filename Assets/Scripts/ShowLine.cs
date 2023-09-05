@@ -9,51 +9,70 @@ using UnityEngine;
 public class ShowLine : MonoBehaviour
 {
     public GameManager gameManager;
+    
+    [SerializeField] private float lineActivationTime = 5f;
+    [SerializeField] private GameLine[] lines;
+    
+    private GameLine activeLine;
+    private List<GameLine> activeLines;
+    private List<LineHit> virtualWinLines;
+    private float timer;
+    private int lineQueCounter;
 
-    private GameLine[] lines;
 
 
+    // Disable each line at the start of the game. Each line will be activated when its needs to play its anim.
     private void Awake()
     {
-        lines = GetComponentsInChildren<GameLine>();
+        foreach (var line in lines)
+        {
+            line.SetUp();
+            line.gameObject.SetActive(false);
+        }
     }
 
-    // Show each line that has a win on it after reels have stopped.
-    private void OnEnable()
+    private void Update()
     {
-        gameManager.ShowLines += ActivateLineAfterWin;
+        timer += Time.deltaTime;
+
+        if (timer > lineActivationTime)
+        {
+            activeLine.Hide();
+            ChangeActiveLine();
+        }
     }
 
-    private void OnDisable()
+    // Make a que of win lines and start update to show them.
+    public void ActivateLines(List<LineHit> winLines, ActiveSymbols[] reelSymbols)
     {
-        gameManager.ShowLines -= ActivateLineAfterWin;
-    }
-
-    public void ActivateLineAfterWin(List<LineHit> lines)
-    {
-        StartCoroutine(ActivateLines(lines));
-    }
-
-    public IEnumerator ActivateLines(List<LineHit> winLines)
-    {
+        if (winLines.Count <= 0)
+        {
+            StartCoroutine(gameManager.FinishSpinCoroutine());
+            return;
+        }
+        
+        virtualWinLines = winLines;
+        activeLines = new List<GameLine>();
+        lineQueCounter = 0;
+        
         foreach (LineHit lineHit in winLines)
         {
-            GameLine line = lines[lineHit.LineId - 1];
-
-            // Show line and win text
-            line.spriteRenderer.enabled = true;
-            ShowLineWinText(lineHit, line);
-            yield return new WaitForSeconds(0.6f);
-
-            // Turn everything off again
-            line.spriteRenderer.enabled = false;
-            line.smallWinBar.enabled = false;
-            line.bigWinBar.enabled = false;
+            activeLines.Add(lines[lineHit.LineId - 1]);
         }
 
-        // These need to be checked here to play animations after lines are shown.
-        //gameManager.FreespinCheck(); // After showing win lines, check if player won freespins.
-        //gameManager.CheckExpandingSymbol(); // Also check if expanding needs to play expanding symbol animations.
+        for (int i = 0; i < activeLines.Count; i++)
+        {
+            LineHit lineHit = winLines[i];
+            
+            for (int j = 0; j < lineHit.WinId; j++)
+            {
+                activeLines[i].AddWinSymbol(reelSymbols[j].GetWinSymbol(activeLines[i].symbolPositions[j]));
+            }
+        }
+        
+        ChangeActiveLine();
+        
+        enabled = true;
     }
 
     // Show all lines for a short time after expanding symbol animation is completed.
@@ -61,30 +80,41 @@ public class ShowLine : MonoBehaviour
     {
         foreach (GameLine line in lines)
         {
-            line.spriteRenderer.enabled = true;
-            yield return new WaitForSeconds(0.3f);
+            line.Show();
+            yield return new WaitForSeconds(0.75f);
         }
 
         yield return new WaitForSeconds(0.25f);
 
         foreach (GameLine line in lines)
         {
-            line.spriteRenderer.enabled = false;
+            line.Hide();
         }
     }
 
-    // Changes and turns on line win text on top of the win line
-    private void ShowLineWinText(LineHit data, GameLine line)
+    // Show next active line in the win lines que. Finish spin if nothing left in the que.
+    private void ChangeActiveLine()
     {
-        if (data.WinId < 4)
+        if (lineQueCounter <= virtualWinLines.Count - 1)
         {
-            line.smallWinBar.text = data.WinMultiplier.ToString();
-            line.smallWinBar.enabled = true;
+            timer = 0.0f;
+            activeLine = activeLines[lineQueCounter];
+            activeLine.Show(virtualWinLines[lineQueCounter]);
+            lineQueCounter++;
         }
         else
         {
-            line.bigWinBar.text = data.WinMultiplier.ToString();
-            line.bigWinBar.enabled = true;
+            ClearAllWinSymbols();
+            enabled = false;
+            StartCoroutine(gameManager.FinishSpinCoroutine());
+        }
+    }
+
+    private void ClearAllWinSymbols()
+    {
+        foreach (GameLine gameLine in lines)
+        {
+            gameLine.ClearWinSymbols();
         }
     }
 }

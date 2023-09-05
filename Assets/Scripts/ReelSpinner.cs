@@ -5,13 +5,8 @@ using UnityEngine;
 public class ReelSpinner : MonoBehaviour
 {
     public ReelManager reelManager;
-    public Action reelsStopped;
     public Action expandingReelStopped;
 
-    private readonly int preSpinLenght = 45;
-    private Vector3 offset = new Vector3(0, 1f);
-    private float prespinDelay = 0.01f;
-    private float spinDelay = 0.02f;
 
     public void SpinExpandingReel(int randomPos)
     {
