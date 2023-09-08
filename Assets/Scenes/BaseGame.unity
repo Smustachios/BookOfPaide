@@ -1242,7 +1242,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1294,8 +1294,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213741720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0275, y: 0.0138, z: 0}
-  m_LocalScale: {x: 15.236932, y: 8.950266, z: 1}
+  m_LocalPosition: {x: 0.0215, y: 0.0138, z: 0}
+  m_LocalScale: {x: 15.224742, y: 9.165455, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 675631566}
@@ -2937,9 +2937,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelId: 4
   teaseAmount: 54
-  preSpinLenght: 9
-  spinLenght: 45
-  spinSpeed: 85
+  bumpAmount: 2
+  preSpinLenght: 27
+  spinLenght: 36
+  spinSpeed: 70
+  preSpinSpeed: 120
+  bumpSpeed: 40
 --- !u!114 &371073774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4362,7 +4365,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5615,7 +5618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 272761325}
-  lineActivationTime: 1
+  lineActivationTime: 2
   lines:
   - {fileID: 1218657538}
   - {fileID: 1364518304}
@@ -8038,7 +8041,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8294,7 +8297,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8945,7 +8948,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -11781,9 +11784,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelId: 5
   teaseAmount: 54
-  preSpinLenght: 9
-  spinLenght: 54
-  spinSpeed: 85
+  bumpAmount: 2
+  preSpinLenght: 27
+  spinLenght: 45
+  spinSpeed: 70
+  preSpinSpeed: 120
+  bumpSpeed: 40
 --- !u!114 &1741654130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11862,9 +11868,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelId: 2
   teaseAmount: 54
-  preSpinLenght: 9
-  spinLenght: 27
-  spinSpeed: 85
+  bumpAmount: 2
+  preSpinLenght: 27
+  spinLenght: 18
+  spinSpeed: 70
+  preSpinSpeed: 120
+  bumpSpeed: 40
 --- !u!114 &1758173844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12248,9 +12257,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelId: 3
   teaseAmount: 54
-  preSpinLenght: 9
-  spinLenght: 36
-  spinSpeed: 85
+  bumpAmount: 2
+  preSpinLenght: 27
+  spinLenght: 27
+  spinSpeed: 70
+  preSpinSpeed: 120
+  bumpSpeed: 40
 --- !u!114 &1786930488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13123,7 +13135,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -13341,7 +13353,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -13731,9 +13743,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelId: 1
   teaseAmount: 54
-  preSpinLenght: 9
-  spinLenght: 18
-  spinSpeed: 85
+  bumpAmount: 2
+  preSpinLenght: 27
+  spinLenght: 9
+  spinSpeed: 70
+  preSpinSpeed: 120
+  bumpSpeed: 40
 --- !u!114 &1943860003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14177,7 +14192,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 65b5baf0bb5e58346a0bc25fa9f054b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

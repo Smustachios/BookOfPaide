@@ -33,7 +33,6 @@ public class GameLine : MonoBehaviour
 
         gameObject.SetActive(true);
         animator.SetInteger("animId", lineID);
-        Debug.Log($"anim id set to: {animator.GetInteger("animId")}");
 
         foreach (SymbolBehaviour symbol in lineWinSymbols)
         {
@@ -47,6 +46,11 @@ public class GameLine : MonoBehaviour
         bigWinBar.enabled = false;
         animator.SetInteger("animId", 0);
         gameObject.SetActive(false);
+
+        foreach (SymbolBehaviour symbol in lineWinSymbols)
+        {
+            symbol.StopAnim();
+        }
     }
 
     public void AddWinSymbol(SymbolBehaviour winSymbol)

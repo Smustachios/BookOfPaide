@@ -4,43 +4,24 @@ using UnityEngine;
 public class SymbolBehaviour : MonoBehaviour
 {
     public Symbol symbolId;
+    public string trigger = "";
 
-    private bool animActive = false;
-    private float animTime = 0.5f;
-    private float timer = 0.0f;
+    private Animator animator;
 
 
-    private void Update()
+    private void Awake()
     {
-        timer += Time.deltaTime;
-        
-        if (animActive)
-        {
-            Scale();
-            animActive = false;
-        }
-
-        if (timer >= animTime)
-        {
-            FinishAnim();
-            enabled = false;
-        }
+        animator = GetComponent<Animator>();
     }
 
     public void StartAnim()
     {
-        animActive = true;
-        enabled = true;
-        timer = 0.0f;
+        animator.SetTrigger(trigger);
     }
 
-    private void Scale()
+    public void StopAnim()
     {
-        transform.localScale *= 0.5f;
-    }
-
-    private void FinishAnim()
-    {
-        transform.localScale = Vector3.one;
+        animator.SetTrigger("exit");
+        animator.ResetTrigger(trigger);
     }
 }

@@ -6,10 +6,13 @@ using UnityEngine;
 public class SpinReel : MonoBehaviour
 {
     [SerializeField] private int reelId;
-    [SerializeField] private float teaseAmount = 54;
+    [SerializeField] private float teaseAmount = 54.0f;
+    [SerializeField] private float bumpAmount = 3.0f;
     [SerializeField] private float preSpinLenght = 9.0f;
     [SerializeField] private float spinLenght = 9.0f;
-    [SerializeField] private float spinSpeed = 100;
+    [SerializeField] private float spinSpeed = 100.0f;
+    [SerializeField] private float preSpinSpeed = 100.0f;
+    [SerializeField] private float bumpSpeed = 100.0f;
 
     private Transform _transform;
     private Vector3 _finalPos;
@@ -31,7 +34,7 @@ public class SpinReel : MonoBehaviour
     {
         if (_preSpinActive)
         {
-            _transform.Translate(new Vector3(0, -0.5f) * spinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, -0.5f) * preSpinSpeed * Time.deltaTime);
 
             if (!(_transform.position.y <= _endPreSpinPos.y)) return;
             
@@ -51,7 +54,7 @@ public class SpinReel : MonoBehaviour
         }
         else if (_spinActive)
         {
-            _transform.Translate(new Vector3(0, 0.25f) * spinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, 0.25f) * bumpSpeed * Time.deltaTime);
 
             if (!(_transform.position.y >= _finalPos.y)) return;
             
@@ -71,7 +74,7 @@ public class SpinReel : MonoBehaviour
     public void StartSpin(SpinType spinType, int randomReelPos, int startTeaseReel)
     {
         _finalPos = new Vector3(_transform.position.x ,-randomReelPos * 3 + 3);
-        _bumpPos = new Vector3(_transform.position.x, _finalPos.y - 3f);
+        _bumpPos = new Vector3(_transform.position.x, _finalPos.y - bumpAmount);
         SetStartPos(spinType, startTeaseReel);
         _endPreSpinPos = _transform.position - new Vector3(0, preSpinLenght);
 
