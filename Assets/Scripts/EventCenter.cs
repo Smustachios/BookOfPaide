@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EventCenter : MonoBehaviour
 {
     public static Action reelsStopped;
+    public static Action<int> reelStop;
+    public static Action linesStopped;
 }

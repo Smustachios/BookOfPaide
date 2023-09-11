@@ -7,26 +7,38 @@ using UnityEngine;
 /// </summary>
 public class ReelManager : MonoBehaviour
 {
+    public ReelConstructor[] reelConstructors;
     public SpinReel[] reelSpinners;
     public ActiveSymbols[] reelActiveSymbols;
-    public ReelConstructor[] reelConstructors;
+    public GameObject teaseReelAnim;
     public GameObject expandingReel;
     public SpriteMask baseReelMask;
     public SpriteMask expandingReelMask;
 
     private SpinData _spinData;
+    private SpinType _spinType;
 
-    
+
+    // After each reel stops spinning, check if next reel needs to play tease anim.
+    private void OnEnable()
+    {
+        EventCenter.reelStop += CheckTeaseAnim;
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.reelStop -= CheckTeaseAnim;
+    }
+
     // Spin all reels
-    public void SpinReels(SpinData spinData, bool isTease, int startTeaseReel)
+    public void SpinReels(SpinData spinData, bool isTease)
     {
         _spinData = spinData;
-        
-        SpinType spinType = isTease ? SpinType.Tease : SpinType.Normal;
+        _spinType = isTease ? SpinType.Tease : SpinType.Normal;
         
         for (int i = 0; i < reelSpinners.Length; i++)
         {
-            reelSpinners[i].StartSpin(spinType, _spinData.RandomReelSpots[i], startTeaseReel);
+            reelSpinners[i].StartSpin(_spinType, _spinData.RandomReelSpots[i], _spinData.StartTeaseReel);
         }
         
         SetUpActiveSymbols();
@@ -88,5 +100,35 @@ public class ReelManager : MonoBehaviour
     {
         baseReelMask.enabled = true;
         expandingReelMask.enabled = false;
+    }
+
+    // Play next reels tease anim if have to.
+    private void CheckTeaseAnim(int reelId)
+    {
+        // Stop anim and continue with the spin sequence if last reel has stopped.
+        if (reelId == 5)
+        { 
+            teaseReelAnim.SetActive(false);
+            return;
+        }
+
+        if (_spinType != SpinType.Tease || reelId < _spinData.StartTeaseReel - 1)
+        {
+            return;
+        }
+
+        teaseReelAnim.transform.position = GetTeaseAnimPos(reelId + 1);
+        teaseReelAnim.SetActive(true);
+    }
+
+    private Vector3 GetTeaseAnimPos(int reelId)
+    {
+        return reelId switch
+        {
+            3 => Vector3.zero,
+            4 => new Vector3(3, 0),
+            5 => new Vector3(6, 0),
+            _ => Vector3.zero,
+        };
     }
 }

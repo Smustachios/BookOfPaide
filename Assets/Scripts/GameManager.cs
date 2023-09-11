@@ -69,12 +69,12 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         // Once last reel has stopped spinning it will notify here to continue with the spin sequence.
-        EventCenter.reelsStopped += FinishSpin;
+        EventCenter.reelsStopped += ShowSpinWins;
     }
 
     private void OnDisable()
     {
-        EventCenter.reelsStopped -= FinishSpin;
+        EventCenter.reelsStopped -= ShowSpinWins;
     }
 
     // This method is called when player presses spin button.
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
             spinData = GetSpinData(); // Spin virtual reels to get all the data.
 
             // reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
-            reelManager.SpinReels(spinData, spinData.IsTease, spinData.StartTeaseReel);
+            reelManager.SpinReels(spinData, spinData.IsTease);
 
             foreach (LineHit hit in spinData.LineHits)
             {
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Once last reel has stopped spinning, finish spinning sequence.
-    private void FinishSpin()
+    private void ShowSpinWins()
     {
         coinManager.GetLineWins(spinData);
         lineAnimations.ActivateLines(spinData.LineHits, reelManager.reelActiveSymbols);
@@ -215,11 +215,5 @@ public class GameManager : MonoBehaviour
         {
             return gamePlay.Spin(FreespinsActivated, coinManager.NOfLines, expandingSymbol);
         }
-    }
-    
-    // Get spin type
-    private SpinType GetSpinType(bool isTease)
-    {
-        return isTease ? SpinType.Tease : SpinType.Normal;
     }
 }

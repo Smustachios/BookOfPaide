@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -61,6 +62,8 @@ public class SpinReel : MonoBehaviour
             _transform.position = _finalPos;
             _spinActive = false;
             enabled = false;
+
+            EventCenter.reelStop.Invoke(reelId);
 
             // Once last reel stops tell continue with the rest of the sequence.
             if (reelId == 5)

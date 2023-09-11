@@ -8,7 +8,7 @@ using UnityEngine;
 public class ReelConstructor : MonoBehaviour
 {
     public int reelId = -1;
-    public int nOfBottomSymbols = 9;
+    public int nOfBottomLoops = 9;
     public int nOfTopLoops = 1;
     public float placementOffset = 3.0f;
     public float positionTracker = -3f;
@@ -33,13 +33,19 @@ public class ReelConstructor : MonoBehaviour
         
         // Bottom symbols.
         positionTracker = -6;
-        int symbolTracker = virtualReel.ReelSymbols.Length;
+        //int symbolTracker = virtualReel.ReelSymbols.Length;
         
-        for (int i = 0; i < nOfBottomSymbols; i++)
+        for (int i = 0; i < nOfBottomLoops; i++)
         {
-            Instantiate(mainReel[symbolTracker - 1], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
-            positionTracker -= placementOffset;
-            symbolTracker--;
+            foreach (GameObject symbol in mainReel)
+            {
+                Instantiate(symbol, transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+                positionTracker -= placementOffset;
+            }
+
+            //Instantiate(mainReel[symbolTracker - 1], transform.position + new Vector3(0, positionTracker), transform.rotation, transform);
+            //positionTracker -= placementOffset;
+            //symbolTracker--;
         }
         
         // Top symbols.

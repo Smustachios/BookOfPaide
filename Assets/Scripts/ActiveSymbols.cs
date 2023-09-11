@@ -1,6 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Gets all active symbols that player sees from the reel.
+/// </summary>
 public class ActiveSymbols : MonoBehaviour
 {
     [SerializeField] private GameObject reel;
@@ -8,7 +11,8 @@ public class ActiveSymbols : MonoBehaviour
     private SymbolBehaviour[] reelSymbols;
     
     
-    
+    // Gets all symbols at the beginning of the spin.
+    // Gets symbols with virtual spin data. All the symbols on the reel must be in the correct order.
     public void GetActiveSymbols(int randomReelSpot)
     {
         reelSymbols = new SymbolBehaviour[3];
@@ -19,8 +23,23 @@ public class ActiveSymbols : MonoBehaviour
         }
     }
 
+    // Gets only win symbol. Each win line uses its reel pos to take win symbol.
     public SymbolBehaviour GetWinSymbol(int symbolPos)
     {
         return reelSymbols[symbolPos];
+    }
+
+    // Get book for free spin start anim. Return null if no books.
+    public SymbolBehaviour GetBookSymbol()
+    {
+        foreach (SymbolBehaviour sym in reelSymbols)
+        {
+            if (sym.symbolId == Symbol.Book)
+            {
+                return sym;
+            }
+        }
+
+        return null;
     }
 }

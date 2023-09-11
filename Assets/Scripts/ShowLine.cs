@@ -12,6 +12,7 @@ public class ShowLine : MonoBehaviour
     
     [SerializeField] private float lineActivationTime = 5f;
     [SerializeField] private GameLine[] lines;
+    [SerializeField] private GameObject symbolAlphaMask;
     
     private GameLine activeLine;
     private List<GameLine> activeLines;
@@ -71,6 +72,7 @@ public class ShowLine : MonoBehaviour
         }
         
         ChangeActiveLine();
+        symbolAlphaMask.SetActive(true);
         
         enabled = true;
     }
@@ -105,6 +107,7 @@ public class ShowLine : MonoBehaviour
         else
         {
             ClearAllWinSymbols();
+            symbolAlphaMask.SetActive(false);
             enabled = false;
             StartCoroutine(gameManager.FinishSpinCoroutine());
         }
