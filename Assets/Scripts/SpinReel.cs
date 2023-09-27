@@ -85,6 +85,19 @@ public class SpinReel : MonoBehaviour
         enabled = true;
     }
 
+    public void StopReel()
+    {
+        if (enabled)
+        {
+            _preSpinActive = false;
+
+            _transform.position = _bumpPos;
+
+            _spinActive = true;
+            _bumpActive = false;
+        }
+    }
+
     private void SetStartPos(SpinType spinType, int startTeaseReel)
     {
         if (spinType == SpinType.Normal)

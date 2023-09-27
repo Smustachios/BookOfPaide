@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine;
 public class ShowLine : MonoBehaviour
 {
     public GameManager gameManager;
+    public bool linesStopped = false;
     
     [SerializeField] private float lineActivationTime = 5f;
     [SerializeField] private GameLine[] lines;
@@ -48,10 +50,11 @@ public class ShowLine : MonoBehaviour
     {
         if (winLines.Count <= 0)
         {
-            StartCoroutine(gameManager.FinishSpinCoroutine());
+            EventCenter.linesStopped.Invoke();
             return;
         }
-        
+
+        linesStopped = false;
         virtualWinLines = winLines;
         activeLines = new List<GameLine>();
         lineQueCounter = 0;
@@ -78,7 +81,7 @@ public class ShowLine : MonoBehaviour
     }
 
     // Show all lines for a short time after expanding symbol animation is completed.
-    public IEnumerator ShowExpandingLines()
+    public IEnumerator ShowExpandingLines(Action destroySymbols)
     {
         foreach (GameLine line in lines)
         {
@@ -92,12 +95,14 @@ public class ShowLine : MonoBehaviour
         {
             line.Hide();
         }
+
+        destroySymbols();
     }
 
     // Show next active line in the win lines que. Finish spin if nothing left in the que.
     private void ChangeActiveLine()
     {
-        if (lineQueCounter <= virtualWinLines.Count - 1)
+        if (lineQueCounter <= virtualWinLines.Count - 1 && !linesStopped)
         {
             timer = 0.0f;
             activeLine = activeLines[lineQueCounter];
@@ -109,7 +114,7 @@ public class ShowLine : MonoBehaviour
             ClearAllWinSymbols();
             symbolAlphaMask.SetActive(false);
             enabled = false;
-            StartCoroutine(gameManager.FinishSpinCoroutine());
+            EventCenter.linesStopped.Invoke();
         }
     }
 

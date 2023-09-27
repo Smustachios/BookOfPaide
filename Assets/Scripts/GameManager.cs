@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private SpinData spinData;
     private int freespinsPlayed = 0;
     private int totalFreespins = 0;
+    private bool reelStopped = false;
 
     private bool _freespinsActivated = false;
     public bool FreespinsActivated
@@ -69,21 +70,41 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         // Once last reel has stopped spinning it will notify here to continue with the spin sequence.
-        EventCenter.reelsStopped += ShowSpinWins;
+        EventCenter.reelsStopped += ShowWinLines;
+        EventCenter.linesStopped += FinishSpin;
     }
 
     private void OnDisable()
     {
-        EventCenter.reelsStopped -= ShowSpinWins;
+        EventCenter.reelsStopped -= ShowWinLines;
+        EventCenter.linesStopped -= FinishSpin;
     }
 
     // This method is called when player presses spin button.
     public void StartSpin()
     {
+        // If player presses spin while reels are running stop reels instanly.
+        if (!spinCompleted)
+        {
+            if (!reelStopped)
+            {
+                reelManager.StopReels();
+                reelStopped = true;
+            }
+            // If spin is pressed again after reels already stopped and game is showing win lines, finish showing current line and skip the rest.
+            else if (!lineAnimations.linesStopped)
+            {
+                lineAnimations.linesStopped = true;
+            }
+        }
+
         if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated)
         {
-            spinCompleted = false; // Cant press spin button again.
+            spinCompleted = false; // So cant do double spin on the reels.
+            reelStopped = false;
             autoSpin.spinActive = true;
+
+            spinData = GetSpinData(); // Spin virtual reels to get all the data.
 
             if (payTable.activeInHierarchy)
             {
@@ -103,44 +124,23 @@ public class GameManager : MonoBehaviour
                 coinManager.uiStrings.UpdateFreespinsLeft(freespinsLeft, totalFreespins);
             }
 
-            spinData = GetSpinData(); // Spin virtual reels to get all the data.
-
             // reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
             reelManager.SpinReels(spinData, spinData.IsTease);
-
-            foreach (LineHit hit in spinData.LineHits)
-            {
-                Debug.Log(hit.WinSymbol);
-            }
-        }
-    }
-
-    public void ShowPaytable()
-    {
-        if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated)
-        {
-            payTable.SetActive(true);
-        }
-    }
-
-    public void ClosePaytable()
-    {
-        if (payTable.activeInHierarchy)
-        {
-            payTable.SetActive(false);
         }
     }
 
     // Once last reel has stopped spinning, finish spinning sequence.
-    private void ShowSpinWins()
+    private void ShowWinLines()
     {
+        reelStopped = true; // Set reels stopped so player can skip showing lines.
+
         coinManager.GetLineWins(spinData);
         lineAnimations.ActivateLines(spinData.LineHits, reelManager.reelActiveSymbols);
     }
 
-    public IEnumerator FinishSpinCoroutine()
+    public void FinishSpin()
     {
-        yield return CheckExpandingSymbol();
+        CheckExpandingSymbol();
         FreespinCheck();
 
         if (!FreespinsActivated)
@@ -152,15 +152,22 @@ public class GameManager : MonoBehaviour
         spinCompleted = true;
         autoSpin.spinActive = false;
     }
-    
-    
+
+    // Move all book symbols in the middle before start book opening anim.
+    public void CollectBooks()
+    {
+        foreach (BookBehaviour book in reelManager.GetActiveBooks())
+        {
+            book.StartBookMovement();
+        }
+    }
 
     // Show expanding symbols.
-    private IEnumerator CheckExpandingSymbol()
+    private void CheckExpandingSymbol()
     {
         if (FreespinsActivated && spinData.ExpandingSymbolHit)
         {
-            yield return expandingSymbolManager.PlayExpandingSymbols(spinData.ExpandingSymbolRowID);
+            expandingSymbolManager.PlayExpandingSymbols(spinData.ExpandingSymbolRowID);
         }
     }
 
@@ -201,6 +208,22 @@ public class GameManager : MonoBehaviour
             FreespinsActivated = false;
             coinManager.uiStrings.UpdateFreespinsLeft(freespinsLeft, totalFreespins);
             freespinsPlayed = 0;
+        }
+    }
+
+    public void ShowPaytable()
+    {
+        if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated)
+        {
+            payTable.SetActive(true);
+        }
+    }
+
+    public void ClosePaytable()
+    {
+        if (payTable.activeInHierarchy)
+        {
+            payTable.SetActive(false);
         }
     }
 

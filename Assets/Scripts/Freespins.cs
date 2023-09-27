@@ -39,6 +39,9 @@ public class Freespins : MonoBehaviour
     // Starting sequence for freespins.
     public IEnumerator StartFreespins(int randomExpandingReelPos)
     {
+        gameManager.CollectBooks();
+        yield return new WaitForSeconds(1.6f);
+
         // Stop from spinning while sequence is activated.
         freespinSequenceActivated = true;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -43,6 +44,15 @@ public class ReelManager : MonoBehaviour
         
         SetUpActiveSymbols();
     }
+
+    // Stop all reels instanly if player presses spin again while on the spin.
+    public void StopReels()
+    {
+        for (int i = 0; i < reelSpinners.Length; i++)
+        {
+            reelSpinners[i].StopReel();
+        }
+    }
     
     // Set up active symbols.
     public void SetUpActiveSymbols()
@@ -51,6 +61,24 @@ public class ReelManager : MonoBehaviour
         {
             reelActiveSymbols[i].GetActiveSymbols(_spinData.RandomReelSpots[i]);
         }
+    }
+
+    // Get all books to move them in the center
+    public List<BookBehaviour> GetActiveBooks()
+    {
+        List<BookBehaviour> allBooks = new List<BookBehaviour>();
+
+        foreach (ActiveSymbols reelSymbols in reelActiveSymbols)
+        {
+            SymbolBehaviour symbol = reelSymbols.GetBookSymbol();
+
+            if (symbol != null)
+            {
+                allBooks.Add(symbol.GetComponent<BookBehaviour>());
+            }
+        }
+
+        return allBooks;
     }
     
     // Clears all 5 reels at the start of the freespins or at the end of the freespins.

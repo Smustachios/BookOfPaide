@@ -16,16 +16,28 @@ public class SymbolBehaviour : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void StartAnim()
+    public void StartAnim(bool isExpandingSymbol = false)
     {
         animator.SetTrigger(trigger);
+
+        if (isExpandingSymbol )
+        {
+            return;
+        }
+
         spriteRenderer.sortingOrder = 5;
     }
 
-    public void StopAnim()
+    public void StopAnim(bool isExpandingSymbol = false)
     {
         animator.SetTrigger("exit");
         animator.ResetTrigger(trigger);
+
+        if (isExpandingSymbol)
+        {
+            return;
+        }
+
         spriteRenderer.sortingOrder = 1;
     }
 }

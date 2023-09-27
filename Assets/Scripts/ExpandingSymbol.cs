@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,75 +11,74 @@ public class ExpandingSymbol : MonoBehaviour
 {
     public GameObject[] reelParents;
     public GameObject ExpandingSymbolLogo;
-    public Sprite[] goldenSymbols;
+    public SymbolBehaviour[] goldenSymbols;
     public ShowLine lines;
+
+    public float timeBetweenSymbolInit = 0.25f;
     public bool expandingAnimationRunning = false;
 
-    private Sprite expandingSymbol;
+    private GameObject expandingSymbol;
+    private List<SymbolBehaviour> activeExpandingSymbols;
 
 
     // Show expanding symbol one by one on each reel that had expanding symbol hit.
-    public IEnumerator PlayExpandingSymbols(List<int> expandingSymbolReels)
+    public void PlayExpandingSymbols(List<int> expandingSymbolReels)
     {
         expandingAnimationRunning = true;
 
-        foreach (int reel in expandingSymbolReels)
-        {
-            foreach (SpriteRenderer render in reelParents[reel].GetComponentsInChildren<SpriteRenderer>())
-            {
-                render.enabled = true;
-                yield return new WaitForSeconds(0.25f);
-            }
-        }
+        activeExpandingSymbols = new List<SymbolBehaviour>();
 
-        // After expanding symbol are visible show all 10 lines.
-        yield return StartCoroutine(lines.ShowExpandingLines());
-
-        // Hide symbol again.
-        HideExpandingSymbols(expandingSymbolReels);
+        StartCoroutine(InitializeSymbols(expandingSymbolReels));
     }
 
     // Get active expanding symbol and fill all sprite renderers with it sprite.
     public void GetExpandingSymbol(Symbol expandingSymbol)
     {
-        this.expandingSymbol = expandingSymbol switch
+        foreach (SymbolBehaviour prefab in  goldenSymbols)
         {
-            Symbol.Ten => goldenSymbols[0],
-            Symbol.Jack => goldenSymbols[1],
-            Symbol.Queen => goldenSymbols[2],
-            Symbol.King => goldenSymbols[3],
-            Symbol.Ace => goldenSymbols[4],
-            Symbol.Pafka => goldenSymbols[5],
-            Symbol.Seire => goldenSymbols[6],
-            Symbol.Mihu => goldenSymbols[7],
-            Symbol.Rolts => goldenSymbols[8],
-            _ => null,
-        };
-
-        FillExpandingSymbols();
-    }
-
-    private void FillExpandingSymbols()
-    {
-        foreach (GameObject reel in reelParents)
-        {
-            foreach (SpriteRenderer renderer in reel.GetComponentsInChildren<SpriteRenderer>())
+            if (prefab.symbolId == expandingSymbol)
             {
-                renderer.sprite = expandingSymbol;
+                this.expandingSymbol = prefab.gameObject;
             }
         }
 
-        ExpandingSymbolLogo.GetComponent<SpriteRenderer>().sprite = expandingSymbol;
+        ExpandingSymbolLogo.GetComponent<SpriteRenderer>().sprite = this.expandingSymbol.GetComponent<SpriteRenderer>().sprite;
     }
 
-    private void HideExpandingSymbols(List<int> expandingSymbolReels)
+    private IEnumerator InitializeSymbols(List<int> expandingSymbolReels)
     {
         foreach (int reel in expandingSymbolReels)
         {
-            foreach (SpriteRenderer render in reelParents[reel].GetComponentsInChildren<SpriteRenderer>())
+            for (int i = 3; i >= -3; i -= 3)
             {
-                render.enabled = false;
+                GameObject symbol = Instantiate(expandingSymbol, reelParents[reel].transform.position + new Vector3(0, i),
+                    reelParents[reel].transform.rotation, reelParents[reel].transform);
+
+                activeExpandingSymbols.Add(symbol.GetComponent<SymbolBehaviour>());
+
+                yield return new WaitForSeconds(timeBetweenSymbolInit);
             }
+        }
+
+        PlayExpandingSymbolAnims();
+
+        // Show all lines to player.
+        yield return StartCoroutine(lines.ShowExpandingLines(DestroyActiveSymbols));
+    }
+
+    private void PlayExpandingSymbolAnims()
+    {
+        foreach (SymbolBehaviour symbol in activeExpandingSymbols)
+        {
+            symbol.StartAnim(true);
+        }
+    }
+
+    private void DestroyActiveSymbols()
+    {
+        foreach (SymbolBehaviour symbol in activeExpandingSymbols)
+        {
+            Destroy(symbol.gameObject);
         }
 
         expandingAnimationRunning = false;
