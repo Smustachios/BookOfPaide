@@ -20,7 +20,7 @@ public class SymbolBehaviour : MonoBehaviour
     {
         animator.SetTrigger(trigger);
 
-        if (isExpandingSymbol )
+        if (isExpandingSymbol)
         {
             return;
         }

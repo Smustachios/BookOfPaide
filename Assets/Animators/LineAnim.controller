@@ -64,7 +64,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Line_8_9_anim
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -78,10 +78,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: e49608dd3f520fd4483df56735b7a4bd, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: speedMulti
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: speedMulti
 --- !u!1102 &-2205927735921499549
 AnimatorState:
   serializedVersion: 6
@@ -149,7 +149,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Line_4_5_anim
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -163,10 +163,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: ba3983c1f2a9418438d817e158a95a27, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: speedMulti
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: speedMulti
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -231,7 +231,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Line_10_anim
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -245,10 +245,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: ef6b876f773c1384b9108d264d57acef, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: speedMulti
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: speedMulti
 --- !u!1107 &4332634722119026599
 AnimatorStateMachine:
   serializedVersion: 6
@@ -260,30 +260,30 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7408127700887064142}
-    m_Position: {x: 490, y: 160, z: 0}
+    m_Position: {x: 490, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2205927735921499549}
-    m_Position: {x: 210, y: 20, z: 0}
+    m_Position: {x: 110, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -378653360138091349}
-    m_Position: {x: 520, y: 90, z: 0}
+    m_Position: {x: 490, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7506223348056714438}
-    m_Position: {x: 550, y: 20, z: 0}
+    m_Position: {x: 490, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6897105613801249507}
-    m_Position: {x: 560, y: -70, z: 0}
+    m_Position: {x: 490, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3930783176008240095}
-    m_Position: {x: 480, y: -130, z: 0}
+    m_Position: {x: 490, y: -90, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -40, y: -60, z: 0}
-  m_EntryPosition: {x: -40, y: 20, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: -80, y: -50, z: 0}
+  m_EntryPosition: {x: -80, y: -10, z: 0}
+  m_ExitPosition: {x: 930, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -2205927735921499549}
 --- !u!1101 &6325591882608798864
@@ -319,7 +319,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Line_Anim
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -333,10 +333,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: e282a06edc14841489a728706246784d, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: speedMulti
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: speedMulti
 --- !u!1102 &7506223348056714438
 AnimatorState:
   serializedVersion: 6
@@ -345,7 +345,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Line_6_7_anim
-  m_Speed: 0.75
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -359,7 +359,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: b0baca61e4b63014b824a50df8e56a2d, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: speedMulti
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: speedMulti

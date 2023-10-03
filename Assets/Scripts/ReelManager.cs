@@ -18,6 +18,7 @@ public class ReelManager : MonoBehaviour
 
     private SpinData _spinData;
     private SpinType _spinType;
+    private bool _teaseCanceled = false;
 
 
     // After each reel stops spinning, check if next reel needs to play tease anim.
@@ -34,6 +35,7 @@ public class ReelManager : MonoBehaviour
     // Spin all reels
     public void SpinReels(SpinData spinData, bool isTease)
     {
+        _teaseCanceled = false;
         _spinData = spinData;
         _spinType = isTease ? SpinType.Tease : SpinType.Normal;
         
@@ -48,6 +50,8 @@ public class ReelManager : MonoBehaviour
     // Stop all reels instanly if player presses spin again while on the spin.
     public void StopReels()
     {
+        DisableTeaseAnim();
+
         for (int i = 0; i < reelSpinners.Length; i++)
         {
             reelSpinners[i].StopReel();
@@ -130,6 +134,14 @@ public class ReelManager : MonoBehaviour
         expandingReelMask.enabled = false;
     }
 
+    // Disable tease when player stops reels
+    private void DisableTeaseAnim()
+    {
+        _teaseCanceled = true;
+        teaseReelAnim.SetActive(false);
+
+    }
+
     // Play next reels tease anim if have to.
     private void CheckTeaseAnim(int reelId)
     {
@@ -140,11 +152,12 @@ public class ReelManager : MonoBehaviour
             return;
         }
 
-        if (_spinType != SpinType.Tease || reelId < _spinData.StartTeaseReel - 1)
+        if (_spinType != SpinType.Tease || reelId < _spinData.StartTeaseReel - 1 || _teaseCanceled)
         {
             return;
         }
 
+        reelSpinners[reelId].SlowReelSpin();
         teaseReelAnim.transform.position = GetTeaseAnimPos(reelId + 1);
         teaseReelAnim.SetActive(true);
     }

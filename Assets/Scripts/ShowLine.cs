@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 
 /// <summary>
@@ -12,7 +13,8 @@ public class ShowLine : MonoBehaviour
     public GameManager gameManager;
     public bool linesStopped = false;
     
-    [SerializeField] private float lineActivationTime = 5f;
+    [SerializeField] private float lineActivationTime = 1.5f;
+    [SerializeField] private float timeBetweenLines = 0.2f;
     [SerializeField] private GameLine[] lines;
     [SerializeField] private GameObject symbolAlphaMask;
     
@@ -86,10 +88,10 @@ public class ShowLine : MonoBehaviour
         foreach (GameLine line in lines)
         {
             line.Show();
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(timeBetweenLines);
         }
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(timeBetweenLines);
 
         foreach (GameLine line in lines)
         {
@@ -97,6 +99,8 @@ public class ShowLine : MonoBehaviour
         }
 
         destroySymbols();
+
+        EventCenter.endOfExpandingAnim.Invoke();
     }
 
     // Show next active line in the win lines que. Finish spin if nothing left in the que.

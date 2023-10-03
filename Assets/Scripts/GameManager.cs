@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum SpinType { Normal, Tease }
 
@@ -19,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] gameSymbols;
     public GameObject payTable;
+    public Button spinButton;
     public Symbol expandingSymbol;
     public int nOfFreespins = 10;
     public int freespinsLeft = 0;
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     private int freespinsPlayed = 0;
     private int totalFreespins = 0;
     private bool reelStopped = false;
+    private bool spinFreeSpins = false;
 
     private bool _freespinsActivated = false;
     public bool FreespinsActivated
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
                 coinManager.uiStrings.UpdateCongratsString(coinManager.TotalWin, freespinsPlayed);
                 freespin.FinishFreespins(coinManager.uiStrings.congratsString);
                 totalFreespins = 0;
+                spinButton.enabled = true;
+                spinFreeSpins = false;
             }
         }
     }
@@ -67,17 +70,29 @@ public class GameManager : MonoBehaviour
         reelManager.MakeBaseReels(gameSymbols);
     }
 
+    private void Update()
+    {
+        if (spinCompleted && spinFreeSpins)
+        {
+            StartSpin();
+        }
+    }
+
     private void OnEnable()
     {
         // Once last reel has stopped spinning it will notify here to continue with the spin sequence.
         EventCenter.reelsStopped += ShowWinLines;
         EventCenter.linesStopped += FinishSpin;
+        EventCenter.endOfExpandingAnim += FreespinCheck;
+        //EventCenter.spinFreeSpins += SpinFreeSpins;
     }
 
     private void OnDisable()
     {
         EventCenter.reelsStopped -= ShowWinLines;
         EventCenter.linesStopped -= FinishSpin;
+        EventCenter.endOfExpandingAnim -= FreespinCheck;
+        //EventCenter.spinFreeSpins -= SpinFreeSpins;
     }
 
     // This method is called when player presses spin button.
@@ -98,7 +113,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated)
+        if (spinCompleted && !expandingSymbolManager.expandingAnimationRunning && !freespin.freespinSequenceActivated && !freespin.freeSpinAwardPageActive)
         {
             spinCompleted = false; // So cant do double spin on the reels.
             reelStopped = false;
@@ -122,6 +137,11 @@ public class GameManager : MonoBehaviour
                 freespinsPlayed++;
                 freespinsLeft--;
                 coinManager.uiStrings.UpdateFreespinsLeft(freespinsLeft, totalFreespins);
+
+                if (!spinFreeSpins)
+                {
+                    SpinFreeSpins();
+                }
             }
 
             // reelSpinner.SpinReels(spinData.RandomReelSpots); // Play spin animation.
@@ -141,7 +161,6 @@ public class GameManager : MonoBehaviour
     public void FinishSpin()
     {
         CheckExpandingSymbol();
-        FreespinCheck();
 
         if (!FreespinsActivated)
         {
@@ -149,8 +168,7 @@ public class GameManager : MonoBehaviour
             coinManager.ClearWins();
         }
 
-        spinCompleted = true;
-        autoSpin.spinActive = false;
+        DelayEndCoroutine();
     }
 
     // Move all book symbols in the middle before start book opening anim.
@@ -168,6 +186,10 @@ public class GameManager : MonoBehaviour
         if (FreespinsActivated && spinData.ExpandingSymbolHit)
         {
             expandingSymbolManager.PlayExpandingSymbols(spinData.ExpandingSymbolRowID);
+        }
+        else
+        {
+            FreespinCheck();
         }
     }
 
@@ -238,5 +260,23 @@ public class GameManager : MonoBehaviour
         {
             return gamePlay.Spin(FreespinsActivated, coinManager.NOfLines, expandingSymbol);
         }
+    }
+
+    private void SpinFreeSpins()
+    {
+        spinFreeSpins = true;
+        spinButton.enabled = false;
+    }
+
+    private void DelayEndCoroutine()
+    {
+        StartCoroutine(DelayEnd());
+    }
+
+    private IEnumerator DelayEnd()
+    {
+        yield return new WaitForSeconds(0.5f);
+        spinCompleted = true;
+        autoSpin.spinActive = false;
     }
 }

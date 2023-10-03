@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -23,11 +22,21 @@ public class SpinReel : MonoBehaviour
     private bool _preSpinActive = false;
     private bool _bumpActive = false;
     private bool _spinActive = false;
+    private float _slowSpin = 0;
+    private float _slowPreSpin = 0;
+    private float _slowBump = 0;
+    private float _actualSpinSpeed = 0;
+    private float _actualPreSpinSpeed = 0;
+    private float _actualBump = 0;
+    private float _slowDivider = 0.75f;
 
 
     private void Awake()
     {
         _transform = transform;
+        _slowSpin = spinSpeed * _slowDivider;
+        _slowPreSpin = preSpinSpeed * _slowDivider;
+        _slowBump = bumpSpeed * _slowDivider;
     }
     
     // Once reel reaches final pos, turn update off.
@@ -35,7 +44,7 @@ public class SpinReel : MonoBehaviour
     {
         if (_preSpinActive)
         {
-            _transform.Translate(new Vector3(0, -0.5f) * preSpinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, -0.5f) * _actualPreSpinSpeed * Time.deltaTime);
 
             if (!(_transform.position.y <= _endPreSpinPos.y)) return;
             
@@ -45,7 +54,7 @@ public class SpinReel : MonoBehaviour
         }
         else if (_bumpActive)
         {
-            _transform.Translate(new Vector3(0, -0.5f) * spinSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, -0.5f) * _actualSpinSpeed * Time.deltaTime);
 
             if (!(_transform.position.y <= _bumpPos.y)) return;
             
@@ -55,7 +64,7 @@ public class SpinReel : MonoBehaviour
         }
         else if (_spinActive)
         {
-            _transform.Translate(new Vector3(0, 0.25f) * bumpSpeed * Time.deltaTime);
+            _transform.Translate(new Vector3(0, 0.25f) * _actualBump * Time.deltaTime);
 
             if (!(_transform.position.y >= _finalPos.y)) return;
             
@@ -81,6 +90,8 @@ public class SpinReel : MonoBehaviour
         SetStartPos(spinType, startTeaseReel);
         _endPreSpinPos = _transform.position - new Vector3(0, preSpinLenght);
 
+        SetOrigSpinSpeed();
+
         _preSpinActive = true;
         enabled = true;
     }
@@ -96,6 +107,22 @@ public class SpinReel : MonoBehaviour
             _spinActive = true;
             _bumpActive = false;
         }
+    }
+
+    // Change speed for tease anim
+    public void SlowReelSpin()
+    {
+        _actualPreSpinSpeed = _slowPreSpin;
+        _actualSpinSpeed = _slowSpin;
+        _actualBump = _slowBump;
+    }
+
+    // Set spin speed
+    private void SetOrigSpinSpeed()
+    {
+        _actualSpinSpeed = spinSpeed;
+        _actualPreSpinSpeed = preSpinSpeed;
+        _actualBump = bumpSpeed;
     }
 
     private void SetStartPos(SpinType spinType, int startTeaseReel)

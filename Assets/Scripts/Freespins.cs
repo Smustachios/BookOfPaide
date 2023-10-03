@@ -21,6 +21,7 @@ public class Freespins : MonoBehaviour
     public ReelManager reelManager;
 
     public bool freespinSequenceActivated = false;
+    public bool freeSpinAwardPageActive = false;
 
     private int randomExpandingReelPos;
 
@@ -28,12 +29,12 @@ public class Freespins : MonoBehaviour
     // Continue with start of freespins after expanding reel has stopped spinning.
     private void OnEnable()
     {
-        gameManager.reelSpinner.expandingReelStopped += FinishExpandingReelSpin;
+        EventCenter.expandingReelStopped += FinishExpandingReelSpin;
     }
 
     private void OnDisable()
     {
-        gameManager.reelSpinner.expandingReelStopped -= FinishExpandingReelSpin;
+        EventCenter.expandingReelStopped -= FinishExpandingReelSpin;
     }
 
     // Starting sequence for freespins.
@@ -74,11 +75,13 @@ public class Freespins : MonoBehaviour
     // Show retrigger message page
     public IEnumerator ShowRetriggerMessage()
     {
+        freeSpinAwardPageActive = true;
         congratsPage.SetActive(true);
         retriggerText.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         congratsPage.SetActive(false);
         retriggerText.SetActive(false);
+        freeSpinAwardPageActive = false;
     }
 
     // Once expanding reel finished spinning, disable expanding reel and background.
@@ -99,6 +102,7 @@ public class Freespins : MonoBehaviour
         freespinsText.SetActive(true);
 
         freespinSequenceActivated = false;
+        //EventCenter.spinFreeSpins.Invoke();
     }
 
     // Scale book object.
@@ -121,6 +125,7 @@ public class Freespins : MonoBehaviour
     // Show congrats page with text for some time. After that reset UI for base game.
     private IEnumerator ShowCongratsPage(TextMeshProUGUI congratzText)
     {
+        freeSpinAwardPageActive = true;
         congratsPage.SetActive(true);
         congratzText.enabled = true;
         yield return new WaitForSeconds(4f);
@@ -131,5 +136,6 @@ public class Freespins : MonoBehaviour
         bookOfPaideHeader.SetActive(true);
         expandingSymbolSprite.SetActive(false);
         freespinsText.SetActive(false);
+        freeSpinAwardPageActive = false;
     }
 }

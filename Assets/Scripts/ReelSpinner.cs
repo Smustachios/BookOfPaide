@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class ReelSpinner : MonoBehaviour
 {
     public ReelManager reelManager;
-    public Action expandingReelStopped;
 
 
     public void SpinExpandingReel(int randomPos)
@@ -32,6 +30,6 @@ public class ReelSpinner : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         // Let freespins know expanding reel has finished to continue with the sequence.
-        expandingReelStopped.Invoke();
+        EventCenter.expandingReelStopped.Invoke();
     }
 }
